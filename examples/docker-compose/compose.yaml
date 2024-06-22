@@ -1,0 +1,27 @@
+name: rust
+
+services:
+  rust-server:
+    image: "rust:test"
+    command:
+      - "+server.ip"
+      - "0.0.0.0"
+      - "+server.port"
+      - "28015"
+      - "+server.hostname"
+      - "Testserver"
+      - "+server.maxplayers"
+      - "10"
+      - "+server.worldsize"
+      - "1000"
+      - "+server.gamemode"
+      - "vanilla"
+      - "+rcon.ip"
+      - "0.0.0.0"
+      - "+rcon.port"
+      - "28016"
+      - "+rcon.password"
+      - "supersecret"
+    ports:
+      - "28015:28015"
+      - "28016:28016"

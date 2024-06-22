@@ -1,11 +1,17 @@
 FROM steamcmd/steamcmd:debian-bookworm
 
-WORKDIR /rust
+WORKDIR /srv/rust
 
-RUN steamcmd +force_install_dir /rust +login anonymous +app_update 258550 validate +quit
+RUN steamcmd +force_install_dir /srv/rust +login anonymous +app_update 258550 validate +quit
 
-RUN chmod +x /rust/runds.sh
+COPY runds.sh runds.sh
 
+RUN chmod +x runds.sh
+
+# server.port
 EXPOSE 28015
 
-ENTRYPOINT ["runds.sh"]
+# rcon.port
+EXPOSE 28016
+
+ENTRYPOINT ["/srv/rust/runds.sh"]
