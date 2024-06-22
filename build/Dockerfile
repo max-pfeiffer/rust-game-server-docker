@@ -9,9 +9,9 @@ COPY runds.sh runds.sh
 RUN chmod +x runds.sh
 
 # server.port
-EXPOSE 28015
+EXPOSE 28015/udp
 
 # rcon.port
-EXPOSE 28016
+EXPOSE 28016/udp
 
 ENTRYPOINT ["/srv/rust/runds.sh"]
