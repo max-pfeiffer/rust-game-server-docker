@@ -3,6 +3,7 @@ name: rust
 services:
   rust-server:
     image: "rust:test"
+    container_name: "rust-server"
     command:
       - "+server.ip"
       - "0.0.0.0"
@@ -16,12 +17,28 @@ services:
       - "1000"
       - "+server.gamemode"
       - "vanilla"
+      - "+server.seed"
+      - "666"
       - "+rcon.ip"
       - "0.0.0.0"
       - "+rcon.port"
       - "28016"
       - "+rcon.password"
       - "supersecret"
+      - "+rcon.web"
+      - "0"
     ports:
       - "28015:28015/udp"
-      - "28016:28016/udp"
+      - "28016:28016/tcp"
+
+  rcon-cli:
+    image: "outdead/rcon:latest"
+    container_name: "rcon-cli"
+    depends_on:
+      - rust-server
+    command:
+      - "./rcon"
+      - "--address"
+      - "rust-server:28016"
+      - "--password"
+      - "supersecret"

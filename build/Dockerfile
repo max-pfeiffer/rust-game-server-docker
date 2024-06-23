@@ -1,4 +1,4 @@
-FROM steamcmd/steamcmd:debian-bookworm
+FROM steamcmd/steamcmd:debian-bookworm as build-stage
 
 WORKDIR /srv/rust
 
@@ -12,6 +12,6 @@ RUN chmod +x runds.sh
 EXPOSE 28015/udp
 
 # rcon.port
-EXPOSE 28016/udp
+EXPOSE 28016/tcp
 
 ENTRYPOINT ["/srv/rust/runds.sh"]

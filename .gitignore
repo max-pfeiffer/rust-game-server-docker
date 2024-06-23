@@ -1,1 +1,8 @@
+.env
+.venv
+.env
 .idea
+.vscode
+.pytest_cache
+.coverage
+__pycache__
