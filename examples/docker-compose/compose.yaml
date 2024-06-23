@@ -2,7 +2,7 @@ name: rust
 
 services:
   rust-server:
-    image: "rust:test"
+    image: "pfeiffermax/rust-game-server:2024-06-23"
     container_name: "rust-server"
     command:
       - "+server.ip"

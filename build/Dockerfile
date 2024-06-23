@@ -1,4 +1,4 @@
-FROM steamcmd/steamcmd:debian-bookworm as build-stage
+FROM steamcmd/steamcmd:debian-bookworm
 
 WORKDIR /srv/rust
 
