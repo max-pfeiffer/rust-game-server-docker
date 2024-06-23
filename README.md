@@ -10,10 +10,6 @@ I will add some automation, so new images are build every first Thursday.
 
 **GitHub Repository:** https://github.com/max-pfeiffer/rust-game-server-docker
 
-Information Sources:
-* [Official Rust Wiki](https://wiki.facepunch.com/rust/)
-* [Valve Wiki](https://developer.valvesoftware.com/wiki/Rust_Dedicated_Server)
-
 ## Usage
 You can append all server configuration options as commands when running `RustDedicated` binary.  
 
@@ -81,3 +77,7 @@ If want to connect to [Rust](https://rust.facepunch.com/) server console via RCO
 ```shell
 docker compose run -it rcon-cli
 ```
+
+## Additional Information Sources
+* [Official Rust Wiki](https://wiki.facepunch.com/rust/)
+* [Valve Wiki](https://developer.valvesoftware.com/wiki/Rust_Dedicated_Server)
