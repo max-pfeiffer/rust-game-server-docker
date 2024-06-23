@@ -6,6 +6,10 @@ every first Thursday. Each update requires players and servers to update their v
 
 I will add some automation, so new images are build every first Thursday.
 
+**Docker Hub:** https://hub.docker.com/r/pfeiffermax/rust-game-server
+
+**GitHub Repository:** https://github.com/max-pfeiffer/rust-game-server-docker
+
 ## Usage
 You can append all server configuration options as commands when running `RustDedicated` binary.  
 
