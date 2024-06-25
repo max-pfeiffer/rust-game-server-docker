@@ -16,68 +16,40 @@ You can append all server configuration options as commands when running `RustDe
 ### Docker Run
 For instance run the Docker container like this:
 ```shell
-docker run -it --publish 28015:28015/udp --publish 28016:28016/tcp pfeiffermax/rust-game-server:2024-06-23 +server.ip 0.0.0.0 +server.port 28015
+docker run -it --publish 28015:28015/udp --publish 28016:28016/tcp pfeiffermax/rust-game-server:2024-06-23 +server.ip 0.0.0.0 +server.port 28015 +rcon.ip 0.0.0.0 +rcon.port 28016
 ```
 
 ### Docker Compose
-A quick and easy way to run the [Rust](https://rust.facepunch.com/) server is Docker Compose.
-Check out the [the example](examples%2Fdocker-compose%2Fcompose.yaml):
-```yaml
-name: rust
-
-services:
-  rust-server:
-    image: "pfeiffermax/rust-game-server:2024-06-23"
-    container_name: "rust-server"
-    command:
-      - "+server.ip"
-      - "0.0.0.0"
-      - "+server.port"
-      - "28015"
-      - "+server.hostname"
-      - "Testserver"
-      - "+server.maxplayers"
-      - "10"
-      - "+server.worldsize"
-      - "1000"
-      - "+server.gamemode"
-      - "vanilla"
-      - "+server.seed"
-      - "666"
-      - "+rcon.ip"
-      - "0.0.0.0"
-      - "+rcon.port"
-      - "28016"
-      - "+rcon.password"
-      - "supersecret"
-      - "+rcon.web"
-      - "0"
-    ports:
-      - "28015:28015/udp"
-      - "28016:28016/tcp"
-
-  rcon-cli:
-    image: "outdead/rcon:latest"
-    container_name: "rcon-cli"
-    depends_on:
-      - rust-server
-    command:
-      - "./rcon"
-      - "--address"
-      - "rust-server:28016"
-      - "--password"
-      - "supersecret"
-```
-
-Fire up the [Rust](https://rust.facepunch.com/) server:
+With Docker Compose you have you can fire up your own [Rust](https://rust.facepunch.com/) server in no-time. For this, just clone this repo
+(or just copy and paste the [compose.yaml](examples/docker-compose/compose.yaml) file to your machine) and run the server with Docker compose like this:
 ```shell
+git clone https://github.com/max-pfeiffer/rust-game-server-docker.git
+cd rust-game-server-docker/examples/docker-compose
 docker compose up
 ```
-If want to connect to [Rust](https://rust.facepunch.com/) server console via RCON use the CLI client:
+You can also run the [Rust](https://rust.facepunch.com/) server in the background with option `-d`:
+```shell
+docker compose up -d
+```
+And show the logs, option `-f` follows the logs:
+```shell
+docker compose logs -f
+```
+
+If you want to connect to [Rust](https://rust.facepunch.com/) server console via RCON use the CLI client:
 ```shell
 docker compose run -it rcon-cli
+[+] Creating 1/0
+ ✔ Container rust-server  Running                                                                                                                                             0.0s 
+Waiting commands for rust-server:28016 (or type :q to exit)
+> 
 ```
+
+### Production Deployment
+If you want to deploy to a production (Linux) server, have a look at the [compose.yaml](examples%2Fdocker-compose-production%2Fcompose.yaml)
+in the Docker Compose production example.
 
 ## Additional Information Sources
 * [Official Rust Wiki](https://wiki.facepunch.com/rust/)
 * [Valve Wiki](https://developer.valvesoftware.com/wiki/Rust_Dedicated_Server)
+* [Admin commands list](https://www.corrosionhour.com/rust-admin-commands/)

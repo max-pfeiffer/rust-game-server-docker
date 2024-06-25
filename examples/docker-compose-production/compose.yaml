@@ -1,0 +1,50 @@
+name: rust
+
+services:
+  rust-server:
+    image: "pfeiffermax/rust-game-server:2024-06-23"
+    container_name: "rust-server"
+    cpus: 2
+    mem_limit: 16gb
+    command:
+      - "+server.ip"
+      - "0.0.0.0"
+      - "+server.port"
+      - "28015"
+      - "+server.hostname"
+      - "Testserver"
+      - "+server.maxplayers"
+      - "10"
+      - "+server.worldsize"
+      - "1000"
+      - "+server.gamemode"
+      - "vanilla"
+      - "+server.seed"
+      - "666"
+      - "+rcon.ip"
+      - "0.0.0.0"
+      - "+rcon.port"
+      - "28016"
+      - "+rcon.password"
+      - "supersecret"
+      - "+rcon.web"
+      - "0"
+    ports:
+      - "28015:28015/udp"
+      - "28016:28016/tcp"
+    volumes:
+        - type: bind
+          source: /var/log/docker-compose/rust
+          target: /var/log
+
+  rcon-cli:
+    image: "outdead/rcon:latest"
+    container_name: "rcon-cli"
+    depends_on:
+      - rust-server
+    command:
+      - "./rcon"
+      - "--address"
+      - "rust-server:28016"
+      - "--password"
+      - "supersecret"
