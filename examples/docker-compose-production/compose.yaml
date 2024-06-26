@@ -12,7 +12,7 @@ services:
       - "+server.port"
       - "28015"
       - "+server.hostname"
-      - "Testserver"
+      - ${SERVER_NAME}
       - "+server.maxplayers"
       - "10"
       - "+server.worldsize"
@@ -21,21 +21,29 @@ services:
       - "vanilla"
       - "+server.seed"
       - "666"
+      - "+server.identity"
+      - ${SERVER_NAME}
       - "+rcon.ip"
       - "0.0.0.0"
       - "+rcon.port"
       - "28016"
       - "+rcon.password"
-      - "supersecret"
+      - ${RCON_PASSWORD}
       - "+rcon.web"
       - "0"
+      - "-logfile"
+      - "/var/log/rust-server-${SERVER_NAME}.log"
     ports:
       - "28015:28015/udp"
       - "28016:28016/tcp"
     volumes:
-        - type: bind
-          source: /var/log/docker-compose/rust
-          target: /var/log
+      - type: volume
+        source: server_identity
+        target: "/srv/rust/server/${SERVER_NAME}"
+      - type: bind
+        source: /var/log/docker-compose/rust
+        target: /var/log
+    env_file: .env
 
   rcon-cli:
     image: "outdead/rcon:latest"
@@ -47,4 +55,8 @@ services:
       - "--address"
       - "rust-server:28016"
       - "--password"
-      - "supersecret"
+      - ${RCON_PASSWORD}
+
+volumes:
+  server_identity:
+    name: "rust-server-identity-${SERVER_NAME}"
