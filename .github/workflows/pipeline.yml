@@ -3,15 +3,7 @@ name: Pipeline
 on: push
 
 jobs:
-  set-environment-variables:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Set environment variables
-        run: |
-          echo "{DATE}={$(date '+%Y-%m-%d')}" >> "$GITHUB_ENV"
-          echo "{DAY_OF_WEEK}={$(date '+%u')}" >> "$GITHUB_ENV"
-
-  code-quality:
+  publish-docker-image:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout Repository
@@ -25,5 +17,4 @@ jobs:
           poetry install --no-interaction --no-root
       - name: Publish Images to Docker Hub
         run: |
-          echo $DATE
-          echo $DAY_OF_WEEK
+          if [ "$(date '+%u')" = "7" ] then echo "execute" fi
