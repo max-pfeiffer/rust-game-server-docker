@@ -17,4 +17,5 @@ jobs:
           poetry install --no-interaction --no-root
       - name: Publish Images to Docker Hub
         run: |
-          if [ "$(date '+%u')" = "7" ] then echo "execute" fi
+          VERSION=$(date '+%Y-%m-%d')
+          if [ "$(date '+%u')" = "7" ]; then echo $VERSION"; fi
