@@ -1,0 +1,23 @@
+name: Pipeline
+
+env:
+  DAY_OF_WEEK: ${{ date '+%u' }}
+
+on: push
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up Python environment
+        uses: ./.github/actions/setup-environment
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          poetry install --no-interaction --no-root
+      - name: Publish Images to Docker Hub
+        run: |
+          echo $DAY_OF_WEEK

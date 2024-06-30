@@ -38,7 +38,7 @@ docker compose logs -f
 
 If you want to connect to [Rust](https://rust.facepunch.com/) server console via RCON use the CLI client:
 ```shell
-docker compose run -it rcon-cli
+docker compose run -it --rm rcon-cli
 [+] Creating 1/0
  ✔ Container rust-server  Running                                                                                                                                             0.0s 
 Waiting commands for rust-server:28016 (or type :q to exit)
