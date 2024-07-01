@@ -1,4 +1,10 @@
-# rust-game-server-docker
+[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+![pipeline workflow](https://github.com/max-pfeiffer/python-poetry/actions/workflows/pipeline.yml/badge.svg)
+![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/pfeiffermax/python-poetry?sort=semver)
+![Docker Pulls](https://img.shields.io/docker/pulls/pfeiffermax/python-poetry)
+
+# Rust Game Server - Docker Image
 This Docker image provides a [Rust](https://rust.facepunch.com/) dedicated game server.
 
 Facepunch releases a [new game update](https://rust.facepunch.com/changes) for the Rust community on a monthly basis
@@ -38,7 +44,7 @@ docker compose logs -f
 
 If you want to connect to [Rust](https://rust.facepunch.com/) server console via RCON use the CLI client:
 ```shell
-docker compose run -it rcon-cli
+docker compose run -it --rm rcon-cli
 [+] Creating 1/0
  ✔ Container rust-server  Running                                                                                                                                             0.0s 
 Waiting commands for rust-server:28016 (or type :q to exit)
