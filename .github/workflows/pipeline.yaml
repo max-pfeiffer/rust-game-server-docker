@@ -1,0 +1,32 @@
+name: Publish Docker Image
+
+on: push
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up Python environment
+        uses: ./.github/actions/setup-environment
+      - name: Install dependencies
+        run: |
+          poetry install --no-interaction --no-root
+      - name: Run ruff
+        run: |
+          poetry run pre-commit run -a 
+
+  test-image-build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up Python environment
+        uses: ./.github/actions/setup-environment
+      - name: Install dependencies
+        run: |
+          poetry install --no-interaction --no-root
+      - name: Run tests with pytest
+        run: |
+          poetry run pytest tests/test_image_build.py

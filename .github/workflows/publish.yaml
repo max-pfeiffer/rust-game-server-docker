@@ -1,21 +1,21 @@
-name: Pipeline
+name: Publish Docker Image
 
-on: push
+on:
+  schedule:
+    - cron: "0 1 1-7 * *"
 
 jobs:
   publish-docker-image:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Set up Python environment
         uses: ./.github/actions/setup-environment
-        with:
-          python-version: "3.11"
       - name: Install dependencies
         run: |
           poetry install --no-interaction --no-root
-      - name: Publish Images to Docker Hub
+      - name: Build and publish Images to Docker Hub every Friday
         run: |
           VERSION=$(date '+%Y-%m-%d')
-          if [ "$(date '+%u')" = "7" ]; then echo $VERSION; fi
+          if [ "$(date '+%u')" = "5" ]; then echo $VERSION; fi

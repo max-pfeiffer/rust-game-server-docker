@@ -13,7 +13,7 @@ def get_context() -> Path:
 
 def get_image_reference(
     registry: str,
-    image_version: str,
+    tag: str,
 ) -> str:
     """Return image reference.
 
@@ -21,5 +21,5 @@ def get_image_reference(
     :param image_version:
     :return:
     """
-    reference: str = f"{registry}/pfeiffermax/rust-game-server:{image_version}"
+    reference: str = f"{registry}/pfeiffermax/rust-game-server:{tag}"
     return reference

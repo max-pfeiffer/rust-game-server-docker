@@ -3,17 +3,21 @@ description: Python environment setup
 
 inputs:
   python-version:
-    description: "The python version to install and use"
+    description: The Python version to install and use
     default: "3.11"
+    required: false
+  poetry-version:
+    description: The Poetry version to install and use
+    default: "1.8.3"
     required: false
 
 runs:
   using: composite
   steps:
     - name: Setup Poetry
-      run: pipx install poetry
+      run: pipx install poetry==${{ inputs.poetry-version }}
       shell: bash
-    - name: Setup python ${{ inputs.python-version }}
+    - name: Setup Python ${{ inputs.python-version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ inputs.python-version }}

@@ -41,7 +41,8 @@ def main(
     """
     github_ref_name: str = getenv("GITHUB_REF_NAME")
     context: Path = get_context()
-    image_reference: str = get_image_reference(registry, version)
+    image_reference_version: str = get_image_reference(registry, version)
+    image_reference_latest: str = get_image_reference(registry, "latest")
     if github_ref_name:
         cache_to: str = f"type=gha,mode=max,scope={github_ref_name}"
         cache_from: str = f"type=gha,scope={github_ref_name}"
@@ -62,7 +63,7 @@ def main(
 
     docker_client.buildx.build(
         context_path=context,
-        tags=image_reference,
+        tags=[image_reference_version, image_reference_latest],
         platforms=PLATFORMS,
         builder=builder,
         cache_to=cache_to,
