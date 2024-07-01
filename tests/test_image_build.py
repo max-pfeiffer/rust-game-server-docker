@@ -50,10 +50,6 @@ def test_image_build(
             push=True,
         )
 
-        # Cleanup
-        docker_client.buildx.stop(buildx_builder)
-        docker_client.buildx.remove(buildx_builder)
-
         furl_item: furl = furl(f"http://{registry_container.get_registry()}")
         furl_item.path /= "v2/_catalog"
 
