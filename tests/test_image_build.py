@@ -29,11 +29,12 @@ def test_image_build(
         username=REGISTRY_USERNAME, password=REGISTRY_PASSWORD
     ).with_bind_ports(5000, 5000) as registry_container:
         registry: str = registry_container.get_registry()
-        image_reference_version: str = get_image_reference(
-            registry, date.today().isoformat()
-        )
-        image_reference_latest: str = get_image_reference(registry, "latest")
-        tags: list[str] = [image_reference_version, image_reference_latest]
+
+        date_tag: str = date.today().isoformat()
+        latest_tag: str = "latest"
+
+        image_reference_version: str = get_image_reference(registry, date_tag)
+        image_reference_latest: str = get_image_reference(registry, latest_tag)
 
         docker_client.login(
             server=registry,
@@ -43,7 +44,7 @@ def test_image_build(
 
         docker_client.buildx.build(
             context_path=CONTEXT,
-            tags=tags,
+            tags=[image_reference_version, image_reference_latest],
             platforms=PLATFORMS,
             builder=buildx_builder,
             push=True,
@@ -70,4 +71,4 @@ def test_image_build(
 
         response_image_tags: list[str] = response.json()["tags"]
 
-        assert not set(tags).difference(set(response_image_tags))
+        assert not {date_tag, latest_tag}.difference(set(response_image_tags))
