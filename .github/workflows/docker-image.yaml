@@ -24,10 +24,26 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install --without dev --no-interaction --no-root
-      - name: Build and publish Images to Docker Hub every Friday
+      - name: Build and publish Images to Docker Hub
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: |
-          export VERSION=$(date '+%Y-%m-%d')
+        run: |          
           if [ "$(date '+%u')" = "${{ inputs.weekday }}" ]; then poetry run python -m build.publish; fi
+
+  tag:
+    runs-on: ubuntu-22.04
+    needs: publish-docker-image
+    steps:
+      - name: Create tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let tag = new Date().toISOString().slice(0, 10)
+            let reference = `refs/tags/${tag}`
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: reference,
+              sha: context.sha
+            })

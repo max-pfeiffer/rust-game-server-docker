@@ -1,5 +1,6 @@
 """Publish CLI."""
 
+from datetime import date
 from os import getenv
 from pathlib import Path
 
@@ -21,7 +22,12 @@ from build.utils import get_context, get_image_reference
     envvar="DOCKER_HUB_PASSWORD",
     help="Docker Hub password",
 )
-@click.option("--version", envvar="VERSION", required=True, help="Image Version")
+@click.option(
+    "--version",
+    envvar="VERSION",
+    default=date.today().isoformat(),
+    help="Image Version",
+)
 @click.option(
     "--registry", envvar="REGISTRY", default="docker.io", help="Docker registry"
 )
