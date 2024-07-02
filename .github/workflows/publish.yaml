@@ -10,20 +10,3 @@ jobs:
     secrets:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-
-  tag:
-    runs-on: ubuntu-22.04
-    needs: publish-docker-image
-    steps:
-      - name: Create tag
-        uses: actions/github-script@v7
-        with:
-          script: |
-            let tag = new Date().toISOString().slice(0, 10)
-            let reference = `refs/tags/${tag}`
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: reference,
-              sha: context.sha
-            })

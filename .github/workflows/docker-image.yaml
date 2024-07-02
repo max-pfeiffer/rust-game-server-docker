@@ -6,7 +6,7 @@ on:
       weekday:
         description: Weekday for execution
         type: string
-        default: "5"
+        default: "3"
     secrets:
       DOCKER_HUB_USERNAME:
         required: true
@@ -34,6 +34,8 @@ jobs:
   tag:
     runs-on: ubuntu-22.04
     needs: publish-docker-image
+    permissions:
+      contents: write
     steps:
       - name: Create tag
         uses: actions/github-script@v7
