@@ -1,0 +1,33 @@
+name: Docker Image
+
+on:
+  workflow_call:
+    inputs:
+      weekday:
+        description: Weekday for execution
+        type: string
+        default: "5"
+    secrets:
+      DOCKER_HUB_USERNAME:
+        required: true
+      DOCKER_HUB_PASSWORD:
+        required: true
+
+jobs:
+  publish-docker-image:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up Python environment
+        uses: ./.github/actions/setup-environment
+      - name: Install dependencies
+        run: |
+          poetry install --without dev --no-interaction --no-root
+      - name: Build and publish Images to Docker Hub every Friday
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: |
+          VERSION=$(date '+%Y-%m-%d')
+          if [ "$(date '+%u')" = ${{ inputs.weekday }} ]; then poetry run python -m build.publish; fi
