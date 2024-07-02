@@ -2,7 +2,7 @@ name: Publish Docker Image
 
 on:
   schedule:
-    - cron: "30 23 * * *"
+    - cron: "50 18 * * *"
 
 jobs:
   publish-docker-image:
@@ -21,4 +21,4 @@ jobs:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |
           VERSION=$(date '+%Y-%m-%d')
-          if [ "$(date '+%u')" = "1" ]; poetry run python -m build.publish; fi
+          if [ "$(date '+%u')" = "1" ]; then poetry run python -m build.publish; fi
