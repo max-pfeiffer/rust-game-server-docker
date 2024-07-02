@@ -30,4 +30,4 @@ jobs:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |
           VERSION=$(date '+%Y-%m-%d')
-          if [ "$(date '+%u')" = ${{ inputs.weekday }} ]; then poetry run python -m build.publish; fi
+          if [ "$(date '+%u')" = "${{ inputs.weekday }}" ]; then poetry run python -m build.publish; fi
