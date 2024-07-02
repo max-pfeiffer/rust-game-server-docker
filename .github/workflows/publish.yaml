@@ -2,7 +2,7 @@ name: Publish Docker Image
 
 on:
   schedule:
-    - cron: "50 18 * * *"
+    - cron: "45 19 * * *"
 
 jobs:
   publish-docker-image:
