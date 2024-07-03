@@ -6,7 +6,7 @@ on:
       weekday:
         description: Weekday for execution
         type: string
-        default: "3"
+        default: "4"
     secrets:
       DOCKER_HUB_USERNAME:
         required: true
