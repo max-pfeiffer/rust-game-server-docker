@@ -2,7 +2,7 @@ name: rust
 
 services:
   rust-server:
-    image: "pfeiffermax/rust-game-server:2024-06-23"
+    image: "pfeiffermax/rust-game-server:latest"
     container_name: "rust-server"
     command:
       - "+server.ip"
@@ -30,6 +30,10 @@ services:
     ports:
       - "28015:28015/udp"
       - "28016:28016/tcp"
+    volumes:
+      - type: volume
+        source: server_identity
+        target: "/srv/rust/server/${SERVER_NAME}"
 
   rcon-cli:
     image: "outdead/rcon:latest"
@@ -42,3 +46,7 @@ services:
       - "rust-server:28016"
       - "--password"
       - "supersecret"
+
+volumes:
+  server_identity:
+    name: "rust-server-identity-${SERVER_NAME}"

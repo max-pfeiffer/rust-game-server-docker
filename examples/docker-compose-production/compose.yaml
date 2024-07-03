@@ -2,7 +2,7 @@ name: rust
 
 services:
   rust-server:
-    image: "pfeiffermax/rust-game-server:2024-06-23"
+    image: "pfeiffermax/rust-game-server:latest"
     container_name: "rust-server"
     cpus: 2
     mem_limit: 16gb

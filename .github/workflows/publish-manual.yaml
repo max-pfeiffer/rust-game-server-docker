@@ -11,6 +11,8 @@ on:
 jobs:
   call-publish-docker-image:
     uses: ./.github/workflows/docker-image.yaml
+    permissions:
+      contents: write
     with:
       weekday: ${{ inputs.weekday }}
     secrets:
