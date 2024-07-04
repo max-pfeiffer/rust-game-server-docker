@@ -1,16 +1,18 @@
 [![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 ![pipeline workflow](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/pipeline.yaml/badge.svg)
+![publish workflow](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/publish.yaml/badge.svg)
 ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/pfeiffermax/rust-game-server?sort=semver)
 ![Docker Pulls](https://img.shields.io/docker/pulls/pfeiffermax/rust-game-server)
 
 # Rust Game Server - Docker Image
 This Docker image provides a [Rust](https://rust.facepunch.com/) dedicated game server.
 
-Facepunch releases a [new game update](https://rust.facepunch.com/changes) for the Rust community on a monthly basis
-every first Thursday. Each update requires players and servers to update their versions of the game.
+Facepunch releases a [game update](https://rust.facepunch.com/changes) for Rust monthly every first Thursday.
+Each update requires players and servers to update their versions of the game.
 
-I will add some automation, so new images are build every first Thursday.
+Therefore, a new image will be built each month every first Thursday night. Just use the `latest` tag and you will
+always have an up-to-date Docker image.
 
 **Docker Hub:** https://hub.docker.com/r/pfeiffermax/rust-game-server
 
@@ -20,7 +22,7 @@ I will add some automation, so new images are build every first Thursday.
 You can append all server configuration options as commands when running `RustDedicated` binary.  
 
 ### Docker Run
-For instance run the Docker container like this:
+For testing purposes, you can fire up a Docker container like this:
 ```shell
 docker run -it --publish 28015:28015/udp --publish 28016:28016/tcp pfeiffermax/rust-game-server:2024-06-23 +server.ip 0.0.0.0 +server.port 28015 +rcon.ip 0.0.0.0 +rcon.port 28016
 ```

@@ -6,7 +6,7 @@ on:
       weekday:
         description: Weekday for execution
         type: string
-        default: "4"
+        default: "5"
     secrets:
       DOCKER_HUB_USERNAME:
         required: true
@@ -30,22 +30,3 @@ jobs:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |          
           if [ "$(date '+%u')" = "${{ inputs.weekday }}" ]; then poetry run python -m build.publish; fi
-
-  tag:
-    runs-on: ubuntu-22.04
-    needs: publish-docker-image
-    permissions:
-      contents: write
-    steps:
-      - name: Create tag
-        uses: actions/github-script@v7
-        with:
-          script: |
-            let tag = new Date().toISOString().slice(0, 10)
-            let reference = `refs/tags/${tag}`
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: reference,
-              sha: context.sha
-            })
