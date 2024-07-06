@@ -2,11 +2,6 @@ name: Docker Image
 
 on:
   workflow_call:
-    inputs:
-      weekday:
-        description: Weekday for execution
-        type: string
-        default: "5"
     secrets:
       DOCKER_HUB_USERNAME:
         required: true
@@ -29,4 +24,4 @@ jobs:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |          
-          if [ "$(date '+%u')" = "${{ inputs.weekday }}" ]; then poetry run python -m build.publish; fi
+          poetry run python -m build.publish

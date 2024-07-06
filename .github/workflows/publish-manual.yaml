@@ -2,11 +2,6 @@ name: Publish Docker Image Manually
 
 on:
   workflow_dispatch:
-    inputs:
-      weekday:
-        description: Weekday for execution
-        type: string
-        default: "5"
 
 jobs:
   call-publish-docker-image:
