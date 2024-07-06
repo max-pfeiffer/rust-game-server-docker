@@ -33,8 +33,8 @@ This is especially important because you need to update the Rust server Docker i
 releases a new software update. When you use a [Docker volume](https://docs.docker.com/storage/volumes/) to store
 the `+server.identity`, all the data is still intact.
 
-Check out the [docker compose]([README.md](examples%2Fdocker-compose%2FREADME.md)) and the
-[docker compose production]([README.md](examples%2Fdocker-compose-production%2FREADME.md)) examples to learn about
+Check out the [docker compose](examples/docker-compose/README.md) and the
+[docker compose production](examples/docker-compose-production/README.md) examples to learn about
 the details. 
 
 ### Docker Run
