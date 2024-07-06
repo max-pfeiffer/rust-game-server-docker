@@ -70,8 +70,8 @@ Waiting commands for rust-server:28016 (or type :q to exit)
 ```
 
 ### Production Deployment
-If you want to deploy to a production (Linux) server, have a look at the [compose.yaml](examples%2Fdocker-compose-production%2Fcompose.yaml)
-in the Docker Compose production example.
+If you want to deploy to a production (Linux) server, have a look at the
+[docker compose production example documentation](examples/docker-compose-production/README.md).
 
 ## Additional Information Sources
 * [Official Rust Wiki](https://wiki.facepunch.com/rust/)
