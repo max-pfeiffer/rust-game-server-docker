@@ -19,7 +19,23 @@ always have an up-to-date Docker image.
 **GitHub Repository:** https://github.com/max-pfeiffer/rust-game-server-docker
 
 ## Usage
-You can append all server configuration options as commands when running `RustDedicated` binary.  
+### Configuration
+You can append all [server configuration options](https://www.corrosionhour.com/rust-admin-commands/) as commands
+when running `RustDedicated` binary. Use the regular syntax like `+server.ip 0.0.0.0` or `-logfile`.
+
+As the Rust server is running in the Docker container as a stateless application, you want to have all stateful server
+data (map, config, blueprints etc.) stored in a [Docker volume](https://docs.docker.com/storage/volumes/)
+which is persisted outside of the container. This can be configured with `+server.identity`: you can specify the
+directory where this data is stored. You need to make sure that this directory is mounted on
+a [Docker Volume](https://docs.docker.com/storage/volumes/).
+
+This is especially important because you need to update the Rust server Docker image every month when Facepunch
+releases a new software update. When you use a [Docker volume](https://docs.docker.com/storage/volumes/) to store
+the `+server.identity`, all the data is still intact.
+
+Check out the [docker compose]([README.md](examples%2Fdocker-compose%2FREADME.md)) and the
+[docker compose production]([README.md](examples%2Fdocker-compose-production%2FREADME.md)) examples to learn about
+the details. 
 
 ### Docker Run
 For testing purposes, you can fire up a Docker container like this:
@@ -44,7 +60,7 @@ And show the logs, option `-f` follows the logs:
 docker compose logs -f
 ```
 
-If you want to connect to [Rust](https://rust.facepunch.com/) server console via RCON use the CLI client:
+If you want to connect to [Rust](https://rust.facepunch.com/) server console via RCON use the [CLI client](https://github.com/gorcon/rcon-cli):
 ```shell
 docker compose run -it --rm rcon-cli
 [+] Creating 1/0
