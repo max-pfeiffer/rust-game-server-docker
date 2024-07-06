@@ -40,7 +40,7 @@ the details.
 ### Docker Run
 For testing purposes, you can fire up a Docker container like this:
 ```shell
-docker run -it --publish 28015:28015/udp --publish 28016:28016/tcp pfeiffermax/rust-game-server:2024-06-23 +server.ip 0.0.0.0 +server.port 28015 +rcon.ip 0.0.0.0 +rcon.port 28016
+docker run -it --publish 28015:28015/udp --publish 28016:28016/tcp pfeiffermax/rust-game-server:latest +server.ip 0.0.0.0 +server.port 28015 +rcon.ip 0.0.0.0 +rcon.port 28016
 ```
 
 ### Docker Compose
@@ -74,6 +74,7 @@ If you want to deploy to a production (Linux) server, have a look at the
 [docker compose production example documentation](examples/docker-compose-production/README.md).
 
 ## Additional Information Sources
+* [SteamDB](https://steamdb.info/app/258550/info/)
 * [Official Rust Wiki](https://wiki.facepunch.com/rust/)
 * [Valve Wiki](https://developer.valvesoftware.com/wiki/Rust_Dedicated_Server)
 * [Admin commands list](https://www.corrosionhour.com/rust-admin-commands/)

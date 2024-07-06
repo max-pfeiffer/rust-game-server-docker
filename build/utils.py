@@ -2,6 +2,9 @@
 
 from pathlib import Path
 
+import requests
+from steam.client import SteamClient
+
 
 def get_context() -> Path:
     """Return Docker build context.
@@ -23,3 +26,43 @@ def get_image_reference(
     """
     reference: str = f"{registry}/pfeiffermax/rust-game-server:{tag}"
     return reference
+
+
+def get_rust_build_id() -> str:
+    """Pull the Rust server's build ID using the Steam Client.
+
+    :return:
+    """
+    client = SteamClient()
+    client.anonymous_login()
+    client.verbose_debug = False
+    info = client.get_product_info(apps=[258550], timeout=1)
+    build_id = info["apps"][258550]["depots"]["branches"]["release"]["buildid"]
+    return build_id
+
+
+def tag_exists(build_id: str) -> bool:
+    """Pull tag data from Docker Hub and check if tag with this build_id already exists.
+
+    :param build_id:
+    :return:
+    """
+    response = requests.get(
+        "https://hub.docker.com/v2/namespaces/pfeiffermax/repositories/rust-game-server/tags"
+    )
+    response.raise_for_status()
+    tags = response.json()["results"]
+    matching_tags = [tag for tag in tags if (build_id in tag["name"])]
+    if matching_tags:
+        return True
+    else:
+        return False
+
+
+def create_tag(build_id: str) -> str:
+    """Create the Docker image tag.
+
+    :param build_id:
+    :return:
+    """
+    return f"build-{build_id}"

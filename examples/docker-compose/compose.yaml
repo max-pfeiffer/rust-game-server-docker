@@ -3,6 +3,7 @@ name: rust
 services:
   rust-server:
     image: "pfeiffermax/rust-game-server:latest"
+    pull_policy: always
     container_name: "rust-server"
     command:
       - "+server.ip"

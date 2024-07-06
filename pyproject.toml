@@ -10,6 +10,7 @@ package-mode = false
 python = "^3.11"
 click = "8.1.7"
 python-on-whales = "0.71.0"
+steam = {version = "1.4.4", extras = ["client"]}
 
 [tool.poetry.group.dev.dependencies]
 bcrypt = "4.1.3"
