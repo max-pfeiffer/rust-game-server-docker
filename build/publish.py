@@ -44,9 +44,18 @@ def main(
     """
     github_ref_name: str = getenv("GITHUB_REF_NAME")
     context: Path = get_context()
-    current_rust_server_build_id = get_rust_build_id()
 
-    if not tag_exists(current_rust_server_build_id):
+    click.echo("Checking Rust server build ID for release branch...")
+    current_rust_server_build_id = get_rust_build_id()
+    click.echo(f"Current Rust server build ID: {current_rust_server_build_id}")
+
+    if tag_exists(current_rust_server_build_id):
+        click.echo(
+            "Image for this build ID already exists. Skipping Docker image build..."
+        )
+    else:
+        click.echo("Building Rust server Docker image...")
+
         tag = create_tag(current_rust_server_build_id)
         image_reference_version: str = get_image_reference(registry, tag)
         image_reference_latest: str = get_image_reference(registry, "latest")

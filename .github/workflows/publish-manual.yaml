@@ -6,8 +6,6 @@ on:
 jobs:
   call-publish-docker-image:
     uses: ./.github/workflows/docker-image.yaml
-    with:
-      weekday: ${{ inputs.weekday }}
     secrets:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
