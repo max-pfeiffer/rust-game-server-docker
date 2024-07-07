@@ -3,8 +3,9 @@ This example demonstrates the usage of the Rust server Docker image for producti
 It also can be utilised to run multiple Rust servers on one host.
 
 It contains the following features:
-* utilises a [Docker Volume](https://docs.docker.com/storage/volumes/) to persist the Rust server data
 * configures resource usage (CPU, memory)
+* sets the `pull_policy` to always, so docker compose pulls a new image when firing up the server
+* utilises a [Docker Volume](https://docs.docker.com/storage/volumes/) to persist the Rust server data
 * creates a bind mount for the log file to make it accessible on the host system
 * uses an .env file to store secrets and configuration
 

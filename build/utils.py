@@ -36,8 +36,8 @@ def get_rust_build_id() -> str:
     client = SteamClient()
     client.anonymous_login()
     client.verbose_debug = False
-    info = client.get_product_info(apps=[258550], timeout=1)
-    build_id = info["apps"][258550]["depots"]["branches"]["release"]["buildid"]
+    info: dict = client.get_product_info(apps=[258550], timeout=1)
+    build_id: str = info["apps"][258550]["depots"]["branches"]["release"]["buildid"]
     return build_id
 
 
@@ -51,8 +51,8 @@ def tag_exists(build_id: str) -> bool:
         "https://hub.docker.com/v2/namespaces/pfeiffermax/repositories/rust-game-server/tags"
     )
     response.raise_for_status()
-    tags = response.json()["results"]
-    matching_tags = [tag for tag in tags if (build_id in tag["name"])]
+    tags: dict = response.json()["results"]
+    matching_tags: list[dict] = [tag for tag in tags if (build_id in tag["name"])]
     if matching_tags:
         return True
     else:
