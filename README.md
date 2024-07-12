@@ -46,8 +46,9 @@ docker run -it --publish 28015:28015/udp --publish 28016:28016/tcp pfeiffermax/r
 ```
 
 ### Docker Compose
-With Docker Compose you have you can fire up your own [Rust](https://rust.facepunch.com/) server in no-time. For this, just clone this repo
-(or just copy and paste the [compose.yaml](examples/docker-compose/compose.yaml) file to your machine) and run the server with Docker compose like this:
+With docker compose you have your own [Rust](https://rust.facepunch.com/) server up and running in no-time. For this,
+just clone this repo (or just copy and paste the [compose.yaml](examples/docker-compose/compose.yaml) file to your
+machine) and run the server with Docker compose like this:
 ```shell
 git clone https://github.com/max-pfeiffer/rust-game-server-docker.git
 cd rust-game-server-docker/examples/docker-compose

@@ -4,7 +4,7 @@ It also can be utilised to run multiple Rust servers on one host.
 
 It contains the following features:
 * configures resource usage (CPU, memory)
-* sets the `pull_policy` to always, so docker compose pulls a new image when firing up the server
+* sets the `pull_policy` to always, so docker compose always pulls the `latest` image when firing up the server
 * utilises a [Docker Volume](https://docs.docker.com/storage/volumes/) to persist the Rust server data
 * creates a bind mount for the log file to make it accessible on the host system
 * uses an .env file to store secrets and configuration
@@ -37,5 +37,4 @@ stopping/removing and creating/starting the container with docker compose. Docke
 image and starts the server. And you are done with your server update. :smiley: 
 
 For instance, you can automate this with a cron job. Check out [rust-server-update.sh](rust-server-update.sh), which is
-a simple script you can add to your cron config.
-Configure this script to be run after the new Rust server image was built each first Friday morning of the month.
+a simple script you can add as a daily job to your `/etc/crontab`. That way you ensure your server is always up-to-date. 
