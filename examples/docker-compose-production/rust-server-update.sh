@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+echo "Changing to script directory..."
+cd $(dirname -- "$0")
 
 # Stop and remove containers, networks
 echo "Stopping and removing containers, networks..."
