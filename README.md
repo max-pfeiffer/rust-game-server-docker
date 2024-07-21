@@ -8,11 +8,13 @@
 # Rust Game Server - Docker Image
 This Docker image provides a [Rust](https://rust.facepunch.com/) dedicated game server.
 
-Facepunch releases a [game update](https://rust.facepunch.com/changes) for Rust monthly every first Thursday.
-Each update requires players and servers to update their versions of the game.
+[Facepunch](https://facepunch.com/) releases an [update](https://rust.facepunch.com/changes) for Rust monthly every
+first Thursday. Also, there are irregular updates every now and then. Each update requires players and servers to
+update their versions of the game.
 
-Therefore, a new image will be built the night after every Rust update. Just use the `latest` tag and you will
-always have an up-to-date Docker image.
+Therefore, an automation checks the [Rust release branch](https://steamdb.info/app/258550/depots/?branch=release) every
+night. If a new release is published by [Facepunch](https://facepunch.com/), a new Docker image will be built with this
+new version. Just use the `latest` tag and you will always have an up-to-date Docker image.
 
 Kudus to [@jonakoudijs](https://github.com/jonakoudijs) for providing the [Steamcmd Docker image](https://github.com/steamcmd/docker) which is used here.
 
