@@ -30,7 +30,7 @@ jobs:
           poetry install --with dev --no-interaction --no-root
       - name: Run tests with pytest
         run: |
-          poetry run pytest --cov build
+          poetry run pytest --cov build --cov-report=xml
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
