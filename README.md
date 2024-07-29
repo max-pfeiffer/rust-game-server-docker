@@ -1,11 +1,12 @@
 [![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![codecov](https://codecov.io/gh/max-pfeiffer/rust-game-server-docker/graph/badge.svg?token=RfzYdxhvCd)](https://codecov.io/gh/max-pfeiffer/rust-game-server-docker)
 ![pipeline workflow](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/pipeline.yaml/badge.svg)
 ![publish workflow](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/publish.yaml/badge.svg)
 ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/pfeiffermax/rust-game-server?sort=semver)
 ![Docker Pulls](https://img.shields.io/docker/pulls/pfeiffermax/rust-game-server)
 
-# Rust Game Server - Docker Image
+# Rust Dedicated Game Server - Docker Image
 This Docker image provides a [Rust](https://rust.facepunch.com/) dedicated game server.
 
 [Facepunch](https://facepunch.com/) releases an [update](https://rust.facepunch.com/changes) for Rust monthly every
@@ -13,7 +14,7 @@ first Thursday. Also, there are irregular updates every now and then. Each updat
 update their versions of the game.
 
 Therefore, an automation checks the [Rust release branch](https://steamdb.info/app/258550/depots/?branch=release) every
-night. If a new release is published by [Facepunch](https://facepunch.com/), a new Docker image will be built with this
+night. If a new release was published by [Facepunch](https://facepunch.com/), a new Docker image will be built with this
 new version. Just use the `latest` tag and you will always have an up-to-date Docker image.
 
 Kudus to [@jonakoudijs](https://github.com/jonakoudijs) for providing the [Steamcmd Docker image](https://github.com/steamcmd/docker) which is used here.
