@@ -9,7 +9,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "^3.11"
 click = "8.1.7"
-python-on-whales = "0.72.0"
+python-on-whales = "0.73.0"
 steam = {version = "1.4.4", extras = ["client"]}
 
 [tool.poetry.group.dev.dependencies]
