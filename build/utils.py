@@ -66,3 +66,18 @@ def create_tag(build_id: str) -> str:
     :return:
     """
     return f"build-{build_id}"
+
+
+def latest_oxide_release_url() -> str:
+    """Get the latest Oxide release URL.
+
+    :return:
+    """
+    response = requests.get(
+        "https://api.github.com/repos/OxideMod/Oxide.Rust/releases/latest"
+    )
+    asset_list: list[dict] = response.json()["assets"]
+    zip_file_url: str = [  # noqa: RUF015
+        item for item in asset_list if item["name"] == "Oxide.Rust-linux.zip"
+    ][0]["browser_download_url"]
+    return zip_file_url
