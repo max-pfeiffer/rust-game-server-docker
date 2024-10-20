@@ -17,7 +17,9 @@ Therefore, an automation checks the [Rust release branch](https://steamdb.info/a
 night. If a new release was published by [Facepunch](https://facepunch.com/), a new Docker image will be built with this
 new version. Just use the `latest` tag and you will always have an up-to-date Docker image.
 
-Kudus to [@jonakoudijs](https://github.com/jonakoudijs) for providing the [Steamcmd Docker image](https://github.com/steamcmd/docker) which is used here.
+Kudus to:
+* [@jonakoudijs](https://github.com/jonakoudijs) for providing the [Steamcmd Docker image](https://github.com/steamcmd/docker) which is used here
+* [@detiam](https://github.com/detiam) for maintaining a working fork for the [Steam websocket client](https://github.com/detiam/steam_websocket) 
 
 **Docker Hub:** https://hub.docker.com/r/pfeiffermax/rust-game-server
 
