@@ -9,7 +9,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "^3.11"
 click = "8.1.7"
-python-on-whales = "0.74.0"
+python-on-whales = "0.75.1"
 steam = {git = "https://github.com/detiam/steam_websocket.git", branch = "master", extras=["client"]}
 
 [tool.poetry.group.dev.dependencies]
