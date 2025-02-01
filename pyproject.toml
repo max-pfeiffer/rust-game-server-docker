@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rust-game-server-docker"
-version = "0.1.0"
+version = "1.0.0"
 description = ""
 authors = ["Max Pfeiffer <max@maxpfeiffer.ch>"]
 readme = "README.md"
@@ -8,8 +8,8 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
-click = "8.1.7"
-python-on-whales = "0.74.0"
+click = "8.1.8"
+python-on-whales = "0.75.1"
 steam = {git = "https://github.com/detiam/steam_websocket.git", branch = "master", extras=["client"]}
 
 [tool.poetry.group.dev.dependencies]
@@ -17,9 +17,9 @@ bcrypt = "4.2.1"
 furl = "2.1.3"
 pytest = "8.3.4"
 pytest-cov = "6.0.0"
-pre-commit = "4.0.1"
-ruff = "0.8.2"
-testcontainers = "4.8.2"
+pre-commit = "4.1.0"
+ruff = "0.9.4"
+testcontainers = "4.9.1"
 
 [tool.ruff]
 exclude = [".venv"]
