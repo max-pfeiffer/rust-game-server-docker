@@ -25,6 +25,17 @@ Kudus to:
 
 **GitHub Repository:** https://github.com/max-pfeiffer/rust-game-server-docker
 
+## Oxide
+Since v1.1.0 I provide an [Oxide](https://umod.org/games/rust) variant of this image. The automation checks for
+[a new Oxide release on GitHub](https://github.com/OxideMod/Oxide.Rust/releases) every night and builds a new image
+based on the latest version of my Rust Docker image.
+
+The tag of these images is prefixed with `oxide-build`. So look out for these
+[tags on Docker Hub](https://hub.docker.com/r/pfeiffermax/rust-game-server/tags) if you want to run Rust with Oxide.
+
+This image aims to be a solid base to run any plugin. So please drop me a line if you are missing any Debian package
+for a plugin.
+
 ## Usage
 ### Configuration
 You can append all [server configuration options](https://www.corrosionhour.com/rust-admin-commands/) as commands
