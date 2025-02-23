@@ -1,6 +1,6 @@
 """Tests."""
 
-from build.utils import latest_oxide_release_url
+from build.utils import oxide_zip_file_url
 
 
 def test_oxide():
@@ -8,5 +8,5 @@ def test_oxide():
 
     :return:
     """
-    release = latest_oxide_release_url()
+    release = oxide_zip_file_url()
     assert release

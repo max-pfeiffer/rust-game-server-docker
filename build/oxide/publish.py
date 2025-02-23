@@ -8,10 +8,11 @@ from python_on_whales import Builder, DockerClient
 
 from build.constants import PLATFORMS
 from build.utils import (
-    create_tag,
+    create_oxide_tag,
     get_context,
     get_image_reference,
-    get_rust_build_id,
+    get_oxide_build_id,
+    oxide_zip_file_url,
     tag_exists,
 )
 
@@ -45,18 +46,18 @@ def main(
     github_ref_name: str = getenv("GITHUB_REF_NAME")
     context: Path = get_context()
 
-    click.echo("Checking Rust server build ID for release branch...")
-    current_rust_server_build_id = get_rust_build_id()
-    click.echo(f"Current Rust server build ID: {current_rust_server_build_id}")
+    click.echo("Checking Oxide build ID for release branch...")
+    current_oxide_build_id = get_oxide_build_id()
+    click.echo(f"Current Oxide build ID: {current_oxide_build_id}")
 
-    if tag_exists(current_rust_server_build_id):
+    if tag_exists(current_oxide_build_id):
         click.echo(
             "Image for this build ID already exists. Skipping Docker image build..."
         )
     else:
-        click.echo("Building Rust server Docker image...")
+        click.echo("Building Oxide mod Docker image...")
 
-        tag = create_tag(current_rust_server_build_id)
+        tag = create_oxide_tag(current_oxide_build_id)
         image_reference_version: str = get_image_reference(registry, tag)
         image_reference_latest: str = get_image_reference(registry, "latest")
         if github_ref_name:
@@ -79,6 +80,10 @@ def main(
 
         docker_client.buildx.build(
             context_path=context,
+            build_args={
+                "OXIDE_ZIP_FILE_URL",
+                oxide_zip_file_url(current_oxide_build_id),
+            },
             tags=[image_reference_version, image_reference_latest],
             platforms=PLATFORMS,
             builder=builder,

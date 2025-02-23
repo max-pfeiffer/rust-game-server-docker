@@ -4,7 +4,7 @@ on: push
 
 jobs:
   code-quality:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -18,7 +18,7 @@ jobs:
           poetry run pre-commit run -a 
 
   test-image-build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: code-quality
     steps:
       - name: Checkout Repository
@@ -32,6 +32,6 @@ jobs:
         run: |
           poetry run pytest --cov build --cov-report=xml
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
