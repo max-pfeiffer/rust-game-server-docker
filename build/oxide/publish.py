@@ -9,9 +9,9 @@ from python_on_whales import Builder, DockerClient
 from build.constants import PLATFORMS
 from build.utils import (
     create_oxide_tag,
-    get_context,
     get_image_reference,
     get_oxide_build_id,
+    get_oxide_context,
     oxide_zip_file_url,
     tag_exists,
 )
@@ -44,7 +44,7 @@ def main(
     :return:
     """
     github_ref_name: str = getenv("GITHUB_REF_NAME")
-    context: Path = get_context()
+    context: Path = get_oxide_context()
 
     click.echo("Checking Oxide build ID for release branch...")
     current_oxide_build_id = get_oxide_build_id()
@@ -81,9 +81,9 @@ def main(
         docker_client.buildx.build(
             context_path=context,
             build_args={
-                "OXIDE_ZIP_FILE_URL",
-                oxide_zip_file_url(current_oxide_build_id),
+                "OXIDE_ZIP_FILE_URL": oxide_zip_file_url(current_oxide_build_id),
             },
+            target="production-image",
             tags=[image_reference_version, image_reference_latest],
             platforms=PLATFORMS,
             builder=builder,

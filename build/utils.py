@@ -68,6 +68,14 @@ def create_tag(build_id: str) -> str:
     return f"build-{build_id}"
 
 
+def get_oxide_context() -> Path:
+    """Return Docker build context.
+
+    :return:
+    """
+    return Path(__file__).parent.resolve() / "oxide"
+
+
 def get_oxide_build_id() -> str:
     """Pull the latest Oxide build ID via GitHub RestAPI.
 
