@@ -1,0 +1,27 @@
+name: Oxide Docker Image
+
+on:
+  workflow_call:
+    secrets:
+      DOCKER_HUB_USERNAME:
+        required: true
+      DOCKER_HUB_PASSWORD:
+        required: true
+
+jobs:
+  publish-docker-image:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up Python environment
+        uses: ./.github/actions/setup-environment
+      - name: Install dependencies
+        run: |
+          poetry install --without dev --no-interaction --no-root
+      - name: Build and publish Images to Docker Hub
+        env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: |          
+          poetry run python -m build.oxide.publish
