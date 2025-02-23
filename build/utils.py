@@ -68,16 +68,43 @@ def create_tag(build_id: str) -> str:
     return f"build-{build_id}"
 
 
-def latest_oxide_release_url() -> str:
-    """Get the latest Oxide release URL.
+def get_oxide_build_id() -> str:
+    """Pull the latest Oxide build ID via GitHub RestAPI.
+
+    See: https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#get-the-latest-release
 
     :return:
     """
     response = requests.get(
         "https://api.github.com/repos/OxideMod/Oxide.Rust/releases/latest"
     )
+    response.raise_for_status()
+    build_id: str = response.json()["tag_name"]
+    return build_id
+
+
+def oxide_zip_file_url(build_id: str) -> str:
+    """Get the latest Oxide release URL.
+
+    See: https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#get-a-release-by-tag-name
+
+    :return:
+    """
+    response = requests.get(
+        f"https://api.github.com/repos/OxideMod/Oxide.Rust/releases/tags/{build_id}"
+    )
+    response.raise_for_status()
     asset_list: list[dict] = response.json()["assets"]
     zip_file_url: str = [  # noqa: RUF015
         item for item in asset_list if item["name"] == "Oxide.Rust-linux.zip"
     ][0]["browser_download_url"]
     return zip_file_url
+
+
+def create_oxide_tag(build_id: str) -> str:
+    """Create the Docker image tag for Oxide build.
+
+    :param build_id:
+    :return:
+    """
+    return f"oxide-build-{build_id}"
