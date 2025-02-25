@@ -12,6 +12,7 @@ jobs:
       DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
   call-publish-oxide-docker-image:
+    needs: call-publish-docker-image
     uses: ./.github/workflows/oxide-docker-image.yaml
     secrets:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
