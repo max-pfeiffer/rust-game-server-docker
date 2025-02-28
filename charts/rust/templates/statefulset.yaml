@@ -37,6 +37,33 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "+server.ip"
+            - "0.0.0.0"
+            - "+server.port"
+            - "28015"
+            - "+server.hostname"
+            - {{ .Values.rustDedicatedServer.hostName }}
+            - "+server.maxplayers"
+            - {{ .Values.rustDedicatedServer.maxPlayers }}
+            - "+server.worldsize"
+            - {{ .Values.rustDedicatedServer.worldSize }}
+            - "+server.gamemode"
+            - "vanilla"
+            - "+server.seed"
+            - {{ .Values.rustDedicatedServer.seed }}
+            - "+server.identity"
+            - "dedicated"
+            - "+rcon.ip"
+            - "0.0.0.0"
+            - "+rcon.port"
+            - "28016"
+            - "+rcon.password"
+            - {{ .Values.rustDedicatedServer.rconPassword }}
+            - "+rcon.web"
+            - {{ .Values.rustDedicatedServer.rconWeb }}
+            - "-logfile"
+            - "/var/log/rust-server-dedicated.log"
           ports:
             - name: server-port
               containerPort: 28015
@@ -50,14 +77,9 @@ spec:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
-      volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+            - name: server-identity
+              mountPath: "/srv/rust/server/dedicated"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -70,3 +92,11 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: server-identity
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
