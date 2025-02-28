@@ -7,9 +7,13 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+    - name: server-port
+      port: 28015
+      targetPort: server-port
+      protocol: UDP
+    - name: rcon-port
+      port: 28016
+      targetPort: rcon-port
+      protocol: UDP
   selector:
     {{- include "rust.selectorLabels" . | nindent 4 }}

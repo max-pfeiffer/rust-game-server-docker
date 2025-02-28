@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "rust.fullname" . }}
   labels:
     {{- include "rust.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
+  serviceName: {{ include "rust.fullname" . }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
@@ -37,9 +38,12 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
+            - name: server-port
+              containerPort: 28015
+              protocol: UDP
+            - name: rcon-port
+              containerPort: 28016
+              protocol: UDP
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
