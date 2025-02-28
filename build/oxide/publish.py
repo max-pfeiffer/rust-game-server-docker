@@ -59,7 +59,7 @@ def main(
 
         tag = create_oxide_tag(current_oxide_build_id)
         image_reference_version: str = get_image_reference(registry, tag)
-        image_reference_latest: str = get_image_reference(registry, "latest")
+        image_reference_latest: str = get_image_reference(registry, "latest-oxide")
         if github_ref_name:
             cache_to: str = f"type=gha,mode=max,scope={github_ref_name}"
             cache_from: str = f"type=gha,scope={github_ref_name}"

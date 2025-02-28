@@ -32,6 +32,7 @@ based on the latest version of my Rust Docker image.
 
 The tag of these images is prefixed with `oxide-build`. So look out for these
 [tags on Docker Hub](https://hub.docker.com/r/pfeiffermax/rust-game-server/tags) if you want to run Rust with Oxide.
+There is also a `latest-oxide` tag, so you can use this to always run an up-to-date Docker image with Oxide.
 
 This image aims to be a solid base to run any plugin. So please drop me a line if you are missing any Debian package
 for a plugin.
