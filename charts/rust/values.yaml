@@ -74,6 +74,10 @@ affinity: {}
 
 rustDedicatedServer:
   hostName: "Vanilla-Rust-Server"
+  serverPort: "28015"
+  rconPort: "28016"
+  serverQueryPort: "28017"
+  appPort: "28082"
   maxPlayers: "20"
   worldSize: "3000"
   seed: "666"

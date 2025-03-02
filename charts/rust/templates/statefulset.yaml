@@ -42,6 +42,8 @@ spec:
             - "0.0.0.0"
             - "+server.port"
             - "28015"
+            - "+server.queryport"
+            - {{ .Values.rustDedicatedServer.serverQueryPort}}
             - "+server.hostname"
             - {{ .Values.rustDedicatedServer.hostName }}
             - "+server.maxplayers"
@@ -62,6 +64,8 @@ spec:
             - "$RCON_PASSWORD"
             - "+rcon.web"
             - {{ .Values.rustDedicatedServer.rconWeb }}
+            - "+app.port"
+            - {{ .Values.rustDedicatedServer.appPort }}
             - "-logfile"
             - "/srv/rust/server/dedicated/logs/rust-server.log"
           env:
@@ -72,11 +76,20 @@ spec:
                   key: rconPassword
           ports:
             - name: server-port
-              containerPort: 28015
+              containerPort: {{ .Values.rustDedicatedServer.serverPort }}
               protocol: UDP
-            - name: rcon-port
-              containerPort: 28016
+            - name: rcon-port-udp
+              containerPort: {{ .Values.rustDedicatedServer.rconPort }}
               protocol: UDP
+            - name: rcon-port-tcp
+              containerPort: {{ .Values.rustDedicatedServer.rconPort }}
+              protocol: TCP
+            - name: server-query-port
+              containerPort: {{ .Values.rustDedicatedServer.serverQueryPort }}
+              protocol: UDP
+            - name: app-port
+              containerPort: {{ .Values.rustDedicatedServer.appPort }}
+              protocol: TCP
           livenessProbe:
             exec:
               command:
@@ -114,7 +127,8 @@ spec:
   - metadata:
       name: server-identity
     spec:
-      accessModes: [ "ReadWriteOnce" ]
+      accessModes:
+        - "ReadWriteOnce"
       resources:
         requests:
-          storage: 1Gi
+          storage: 5Gi
