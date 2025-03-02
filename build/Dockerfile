@@ -1,5 +1,9 @@
 FROM steamcmd/steamcmd:debian-bookworm
 
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+    netcat-traditional
+
 WORKDIR /srv/rust
 
 RUN steamcmd +force_install_dir /srv/rust +login anonymous +app_update 258550 validate +quit

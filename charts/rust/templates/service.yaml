@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "rust.fullname" . }}
+  labels:
+    {{- include "rust.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: server-port
+      port: {{ .Values.rustDedicatedServer.serverPort }}
+      targetPort: server-port
+      protocol: UDP
+    - name: rcon-port-udp
+      port: {{ .Values.rustDedicatedServer.rconPort }}
+      targetPort: rcon-port-udp
+      protocol: UDP
+    - name: rcon-port-tcp
+      port: {{ .Values.rustDedicatedServer.rconPort }}
+      targetPort: rcon-port-tcp
+      protocol: TCP
+    - name: server-query-port
+      port: {{ .Values.rustDedicatedServer.serverQueryPort }}
+      targetPort: server-query-port
+      protocol: UDP
+    - name: app-port
+      port: {{ .Values.rustDedicatedServer.appPort }}
+      targetPort: app-port
+      protocol: TCP
+  selector:
+    {{- include "rust.selectorLabels" . | nindent 4 }}
