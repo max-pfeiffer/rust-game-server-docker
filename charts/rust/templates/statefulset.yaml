@@ -59,11 +59,17 @@ spec:
             - "+rcon.port"
             - "28016"
             - "+rcon.password"
-            - {{ .Values.rustDedicatedServer.rconPassword }}
+            - "$RCON_PASSWORD"
             - "+rcon.web"
             - {{ .Values.rustDedicatedServer.rconWeb }}
             - "-logfile"
             - "/srv/rust/server/dedicated/logs/rust-server.log"
+          env:
+            - name: RCON_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "rust.fullname" . }}
+                  key: rconPassword
           ports:
             - name: server-port
               containerPort: 28015
@@ -72,9 +78,21 @@ spec:
               containerPort: 28016
               protocol: UDP
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            exec:
+              command:
+                - "nc"
+                - "-up"
+                - "127.0.0.1"
+                - "28015"
+                - "28016"
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            exec:
+              command:
+                - "nc"
+                - "-up"
+                - "127.0.0.1"
+                - "28015"
+                - "28016"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
