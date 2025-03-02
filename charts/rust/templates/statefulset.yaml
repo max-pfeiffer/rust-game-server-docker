@@ -41,7 +41,7 @@ spec:
             - "+server.ip"
             - "0.0.0.0"
             - "+server.port"
-            - "28015"
+            - {{ .Values.rustDedicatedServer.serverPort }}
             - "+server.queryport"
             - {{ .Values.rustDedicatedServer.serverQueryPort}}
             - "+server.hostname"
@@ -59,7 +59,7 @@ spec:
             - "+rcon.ip"
             - "0.0.0.0"
             - "+rcon.port"
-            - "28016"
+            - {{ .Values.rustDedicatedServer.rconPort }}
             - "+rcon.password"
             - "$RCON_PASSWORD"
             - "+rcon.web"
@@ -94,18 +94,16 @@ spec:
             exec:
               command:
                 - "nc"
-                - "-up"
+                - "-nuzv"
                 - "127.0.0.1"
-                - "28015"
-                - "28016"
+                - {{ .Values.rustDedicatedServer.serverPort }}
           readinessProbe:
             exec:
               command:
                 - "nc"
-                - "-up"
+                - "-nuzv"
                 - "127.0.0.1"
-                - "28015"
-                - "28016"
+                - {{ .Values.rustDedicatedServer.serverPort }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
