@@ -63,7 +63,7 @@ spec:
             - "+rcon.web"
             - {{ .Values.rustDedicatedServer.rconWeb }}
             - "-logfile"
-            - "/var/log/rust-server-dedicated.log"
+            - "/srv/rust/server/dedicated/logs/rust-server.log"
           ports:
             - name: server-port
               containerPort: 28015
