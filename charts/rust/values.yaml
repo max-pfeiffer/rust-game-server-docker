@@ -83,3 +83,4 @@ rustDedicatedServer:
   seed: "666"
   rconWeb: "0"
   rconPassword: "password"
+  volumeStorageSize: 1Gi

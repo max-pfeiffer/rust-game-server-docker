@@ -1,5 +1,6 @@
 FROM steamcmd/steamcmd:debian-bookworm
 
+# We need netcat for readiness and liveness probes
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
     netcat-traditional
