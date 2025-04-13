@@ -3,6 +3,7 @@
 [![codecov](https://codecov.io/gh/max-pfeiffer/rust-game-server-docker/graph/badge.svg?token=RfzYdxhvCd)](https://codecov.io/gh/max-pfeiffer/rust-game-server-docker)
 ![pipeline workflow](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/pipeline.yaml/badge.svg)
 ![publish workflow](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/publish.yaml/badge.svg)
+![helm-release workflow](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/helm-release.yaml/badge.svg)
 ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/pfeiffermax/rust-game-server?sort=semver)
 ![Docker Pulls](https://img.shields.io/docker/pulls/pfeiffermax/rust-game-server)
 
@@ -92,6 +93,15 @@ Waiting commands for rust-server:28016 (or type :q to exit)
 ### Production Deployment
 If you want to deploy to a production (Linux) server, have a look at the
 [docker compose production example documentation](examples/docker-compose-production/README.md).
+
+## Helm chart
+If you would like to run the Rust server in your Kubernetes cluster, there is a Helm chart you could use.
+As the Rust server is a stateful application, you can run a single instance with each Helm installation.
+Autoscaling is pointless here.
+
+If you want to run a lot of Rust servers in your Kubernetes cluster or want to set up a server farm, this Helm chart
+is not for you. You probably want to have a look at [Agones](https://github.com/googleforgames/agones) which was made
+for this.
 
 ## Additional Information Sources
 * [SteamDB](https://steamdb.info/app/258550/info/)
