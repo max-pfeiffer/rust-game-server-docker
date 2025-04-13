@@ -7,8 +7,9 @@
 ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/pfeiffermax/rust-game-server?sort=semver)
 ![Docker Pulls](https://img.shields.io/docker/pulls/pfeiffermax/rust-game-server)
 
-# Rust Dedicated Game Server - Docker Image
-This Docker image provides a [Rust](https://rust.facepunch.com/) dedicated game server.
+# Rust Dedicated Game Server - Docker Image and Helm chart
+This Docker image provides a [Rust](https://rust.facepunch.com/) dedicated game server. You will find here also a
+[Helm Chart](https://helm.sh/) for running a Rust dedicated server on [Kubernetes container orchestration system](https://kubernetes.io/). 
 
 [Facepunch](https://facepunch.com/) releases an [update](https://rust.facepunch.com/changes) for Rust monthly every
 first Thursday. Also, there are irregular updates every now and then. Each update requires players and servers to
@@ -95,8 +96,8 @@ If you want to deploy to a production (Linux) server, have a look at the
 [docker compose production example documentation](examples/docker-compose-production/README.md).
 
 ## Helm chart
-If you would like to run the Rust server in your Kubernetes cluster, there is this Helm chart you could use:
-[https://max-pfeiffer.github.io/rust-game-server-docker](https://max-pfeiffer.github.io/rust-game-server-docker)
+If you would like to run the Rust server in your [Kubernetes](https://kubernetes.io/) cluster, there is this
+[Helm chart](https://helm.sh/) you could use: [https://max-pfeiffer.github.io/rust-game-server-docker](https://max-pfeiffer.github.io/rust-game-server-docker)
 
 Currently, you can run a single server instance with each Helm installation. The installation is done as follows:
 ```shell
