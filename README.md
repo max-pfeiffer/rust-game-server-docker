@@ -97,12 +97,16 @@ If you want to deploy to a production (Linux) server, have a look at the
 ## Helm chart
 If you would like to run the Rust server in your Kubernetes cluster, there is this Helm chart you could use:
 [https://max-pfeiffer.github.io/rust-game-server-docker](https://max-pfeiffer.github.io/rust-game-server-docker)
-As the Rust server is a stateful application, you can run a single instance with each Helm installation.
-Autoscaling is pointless here.
+
+Currently, you can run a single server instance with each Helm installation. The installation is done as follows:
+```shell
+$ helm repo add rust https://max-pfeiffer.github.io/rust-game-server-docker
+$ helm install rust rust/rust --values your_values.yaml --namespace yournamespace 
+```
 
 If you want to run a lot of Rust servers in your Kubernetes cluster or want to set up a server farm, this Helm chart
 is not for you. You probably want to have a look at [Agones](https://github.com/googleforgames/agones) which was made
-for this.
+for exactly doing for this.
 
 ## Additional Information Sources
 * [SteamDB](https://steamdb.info/app/258550/info/)
