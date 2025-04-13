@@ -5,10 +5,8 @@ metadata:
   labels:
     {{- include "rust.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   serviceName: {{ include "rust.fullname" . }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "rust.selectorLabels" . | nindent 6 }}
@@ -129,4 +127,4 @@ spec:
         - "ReadWriteOnce"
       resources:
         requests:
-          storage: 5Gi
+          storage: 1Gi
