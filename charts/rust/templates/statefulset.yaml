@@ -88,14 +88,16 @@ spec:
             - name: app-port
               containerPort: {{ .Values.rustDedicatedServer.appPort }}
               protocol: TCP
-          livenessProbe:
+          startupProbe:
+            periodSeconds: 10
+            failureThreshold: 100
             exec:
               command:
                 - "nc"
                 - "-nuzv"
                 - "127.0.0.1"
                 - "{{ .Values.rustDedicatedServer.serverPort }}"
-          readinessProbe:
+          livenessProbe:
             exec:
               command:
                 - "nc"
