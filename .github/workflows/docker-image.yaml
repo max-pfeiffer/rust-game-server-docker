@@ -2,6 +2,11 @@ name: Docker Image
 
 on:
   workflow_call:
+    inputs:
+      PUBLISH_MANUALLY:
+        type: boolean
+        default: false
+        required: false
     secrets:
       DOCKER_HUB_USERNAME:
         required: true
@@ -23,5 +28,6 @@ jobs:
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          PUBLISH_MANUALLY: ${{ inputs.PUBLISH_MANUALLY }}
         run: |          
           poetry run python -m build.publish
