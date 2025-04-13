@@ -95,7 +95,8 @@ If you want to deploy to a production (Linux) server, have a look at the
 [docker compose production example documentation](examples/docker-compose-production/README.md).
 
 ## Helm chart
-If you would like to run the Rust server in your Kubernetes cluster, there is a Helm chart you could use.
+If you would like to run the Rust server in your Kubernetes cluster, there is this Helm chart you could use:
+[https://max-pfeiffer.github.io/rust-game-server-docker](https://max-pfeiffer.github.io/rust-game-server-docker)
 As the Rust server is a stateful application, you can run a single instance with each Helm installation.
 Autoscaling is pointless here.
 

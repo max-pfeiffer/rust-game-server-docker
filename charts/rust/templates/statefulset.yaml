@@ -35,35 +35,35 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command:
+          args:
             - "+server.ip"
             - "0.0.0.0"
             - "+server.port"
-            - {{ .Values.rustDedicatedServer.serverPort }}
+            - "{{ .Values.rustDedicatedServer.serverPort }}"
             - "+server.queryport"
-            - {{ .Values.rustDedicatedServer.serverQueryPort}}
+            - "{{ .Values.rustDedicatedServer.serverQueryPort}}"
             - "+server.hostname"
-            - {{ .Values.rustDedicatedServer.hostName }}
+            - "{{ .Values.rustDedicatedServer.hostName }}"
             - "+server.maxplayers"
-            - {{ .Values.rustDedicatedServer.maxPlayers }}
+            - "{{ .Values.rustDedicatedServer.maxPlayers }}"
             - "+server.worldsize"
-            - {{ .Values.rustDedicatedServer.worldSize }}
+            - "{{ .Values.rustDedicatedServer.worldSize }}"
             - "+server.gamemode"
             - "vanilla"
             - "+server.seed"
-            - {{ .Values.rustDedicatedServer.seed }}
+            - "{{ .Values.rustDedicatedServer.seed }}"
             - "+server.identity"
             - "dedicated"
             - "+rcon.ip"
             - "0.0.0.0"
             - "+rcon.port"
-            - {{ .Values.rustDedicatedServer.rconPort }}
+            - "{{ .Values.rustDedicatedServer.rconPort }}"
             - "+rcon.password"
             - "$RCON_PASSWORD"
             - "+rcon.web"
-            - {{ .Values.rustDedicatedServer.rconWeb }}
+            - "{{ .Values.rustDedicatedServer.rconWeb }}"
             - "+app.port"
-            - {{ .Values.rustDedicatedServer.appPort }}
+            - "{{ .Values.rustDedicatedServer.appPort }}"
             - "-logfile"
             - "/srv/rust/server/dedicated/logs/rust-server.log"
           env:
@@ -82,26 +82,28 @@ spec:
             - name: rcon-port-tcp
               containerPort: {{ .Values.rustDedicatedServer.rconPort }}
               protocol: TCP
-            - name: server-query-port
+            - name: query-port
               containerPort: {{ .Values.rustDedicatedServer.serverQueryPort }}
               protocol: UDP
             - name: app-port
               containerPort: {{ .Values.rustDedicatedServer.appPort }}
               protocol: TCP
+          startupProbe:
+            periodSeconds: 10
+            failureThreshold: 100
+            exec:
+              command:
+                - "nc"
+                - "-nuzv"
+                - "127.0.0.1"
+                - "{{ .Values.rustDedicatedServer.serverPort }}"
           livenessProbe:
             exec:
               command:
                 - "nc"
                 - "-nuzv"
                 - "127.0.0.1"
-                - {{ .Values.rustDedicatedServer.serverPort }}
-          readinessProbe:
-            exec:
-              command:
-                - "nc"
-                - "-nuzv"
-                - "127.0.0.1"
-                - {{ .Values.rustDedicatedServer.serverPort }}
+                - "{{ .Values.rustDedicatedServer.serverPort }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
