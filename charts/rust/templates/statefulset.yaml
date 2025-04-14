@@ -64,8 +64,6 @@ spec:
             - "{{ .Values.rustDedicatedServer.rconWeb }}"
             - "+app.port"
             - "{{ .Values.rustDedicatedServer.appPort }}"
-            - "-logfile"
-            - "/srv/rust/server/dedicated/logs/rust-server.log"
           env:
             - name: RCON_PASSWORD
               valueFrom:
