@@ -14,6 +14,6 @@ COPY runds.sh runds.sh
 RUN chmod +x runds.sh
 
 # server.port, rcon.port udp, rcon.port tcp, queryport, app.port
-EXPOSE 28015/udp 28016/udp, 28016/tcp, 28017/udp, 28082/tcp
+EXPOSE 28015/udp 28016/udp 28016/tcp 28017/udp 28082/tcp
 
 ENTRYPOINT ["/srv/rust/runds.sh"]
