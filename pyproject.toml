@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "rust-game-server-docker"
-version = "1.1.0"
-description = ""
+version = "1.2.0"
+description = "Docker container providing a Rust dedicated game server"
 authors = ["Max Pfeiffer <max@maxpfeiffer.ch>"]
 readme = "README.md"
 package-mode = false
@@ -18,7 +18,7 @@ furl = "2.1.4"
 pre-commit = "4.2.0"
 pytest = "8.3.5"
 pytest-cov = "6.1.1"
-ruff = "0.11.5"
+ruff = "0.11.6"
 testcontainers = "4.10.0"
 
 [tool.ruff]
