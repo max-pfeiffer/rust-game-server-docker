@@ -77,6 +77,11 @@ tolerations: []
 
 affinity: {}
 
+# Rust dedicated server startup is slow, so you might need to bump up these values for larger worldsize
+startupProbe:
+  periodSeconds: 10
+  failureThreshold: 100
+
 rustDedicatedServer:
   hostName: "Vanilla-Rust-Server"
   serverPort: "28015"
