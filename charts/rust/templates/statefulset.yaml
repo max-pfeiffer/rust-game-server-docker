@@ -87,8 +87,8 @@ spec:
               containerPort: {{ .Values.rustDedicatedServer.appPort }}
               protocol: TCP
           startupProbe:
-            periodSeconds: 10
-            failureThreshold: 100
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
             exec:
               command:
                 - "nc"
