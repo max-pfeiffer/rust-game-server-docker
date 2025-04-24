@@ -99,11 +99,7 @@ If you want to deploy to a production (Linux) server, have a look at the
 If you would like to run the Rust server in your [Kubernetes](https://kubernetes.io/) cluster, I provide a
 [Helm chart](https://helm.sh/) you could use: [https://max-pfeiffer.github.io/rust-game-server-docker](https://max-pfeiffer.github.io/rust-game-server-docker)
 
-Currently, you can run a single server instance with each Helm installation. The installation is done as follows:
-```shell
-$ helm repo add rust https://max-pfeiffer.github.io/rust-game-server-docker
-$ helm install rust rust/rust --values your_values.yaml --namespace yournamespace 
-```
+There is also [documentation available](charts/rust/README.md) for that Helm chart.
 
 If you want to run your Rust server on bare metal Kubernetes, check out
 [my blog article](https://max-pfeiffer.github.io/blog/hosting-game-servers-on-bare-metal-kubernetes-with-kube-vip.html)

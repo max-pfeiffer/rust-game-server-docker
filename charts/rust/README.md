@@ -1,0 +1,61 @@
+# Rust Helm Chart
+A [Helm chart](https://helm.sh/) for running a Rust dedicated server.
+
+## Installation
+### Helm
+Currently, you can run a single server instance with each Helm installation. The installation is done as follows:
+```shell
+$ helm repo add rust https://max-pfeiffer.github.io/rust-game-server-docker
+$ helm install rust rust/rust --values your_values.yaml --namespace yournamespace 
+```
+
+### Argo CD
+I recommend running and deploying the Rust dedicated server with [Argo CD](https://argoproj.github.io/cd/). This way
+you have a declarative installation of your server. It's very easy to manage and update it that way.
+A big plus is also the [Argo CD Image Updater](https://github.com/argoproj-labs/argocd-image-updater). This tool can
+monitor the [Rust Docker Image](https://hub.docker.com/r/pfeiffermax/rust-game-server) and will update your Rust
+installation automatically when a new image is released.
+
+## Configuration options
+### Resources
+Make sure to get the resource specs right. You will need at least two CPU cores and 8GB of RAM. There is a [RAM
+estimation tool](https://developer.valvesoftware.com/wiki/Rust_Dedicated_Server#System_Requirements) that you could use.
+```yaml
+resources:
+  limits:
+    cpu: 3
+    memory: 10Gi
+  requests:
+    cpu: 2
+    memory: 8Gi
+```
+Especially RAM is quite critical as Kubernetes is evicting/kills the Pod when it overshoots that resource limit. So
+you want to check your monitoring and adjust `resource.limits.memory` when you see that happening. It's generally a
+good idea to set the limit a bit higher than what you think the Rust server will request.
+
+### Startup Probe
+Rust server startup is very slow. The larger your world size is, the more time it takes on first boot to generate the
+world. Depending on your world size, you need to raise the `failureThreshold`. Multiply `periodSeconds` with
+`failureThreshold` to get the maximum time for startup. These settings work for a 3000 world size:
+```yaml
+startupProbe:
+  periodSeconds: 10
+  failureThreshold: 100
+```
+
+### Rust server config
+Tweak the Rust server config to your liking. `hostName` cannot contain spaces. 
+```yaml
+rustDedicatedServer:
+  hostName: "Vanilla-Rust-Server"
+  serverPort: "28015"
+  rconPort: "28016"
+  serverQueryPort: "28017"
+  appPort: "28082"
+  maxPlayers: "20"
+  worldSize: "3000"
+  seed: "666"
+  rconWeb: "0"
+  rconPassword: "password"
+  volumeStorageSize: 1Gi
+```
