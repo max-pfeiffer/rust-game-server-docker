@@ -83,14 +83,16 @@ startupProbe:
   failureThreshold: 100
 
 rustDedicatedServer:
-  hostName: "Vanilla-Rust-Server"
-  serverPort: "28015"
-  rconPort: "28016"
-  serverQueryPort: "28017"
-  appPort: "28082"
-  maxPlayers: "20"
-  worldSize: "3000"
-  seed: "666"
-  rconWeb: "0"
-  rconPassword: "password"
+  hostName: Vanilla-Rust-Server
+  serverPort: 28015
+  rconPort: 28016
+  serverQueryPort: 28017
+  appPort: 28082
+  maxPlayers: 20
+  worldSize: 3000
+  seed: 666
+  # Use 1 to switch on web rcon, 0 to switch off web rcon. The protocol (TCP or UDP) is configured accordingly
+  # for the rconPort.
+  rconWeb: 1
+  rconPassword: password
   volumeStorageSize: 1Gi
