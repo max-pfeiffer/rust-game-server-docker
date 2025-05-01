@@ -16,13 +16,9 @@ spec:
       port: {{ .Values.rustDedicatedServer.serverPort }}
       targetPort: server-port
       protocol: UDP
-    - name: rcon-port-udp
+    - name: rcon-port
       port: {{ .Values.rustDedicatedServer.rconPort }}
-      targetPort: rcon-port-udp
-      protocol: UDP
-    - name: rcon-port-tcp
-      port: {{ .Values.rustDedicatedServer.rconPort }}
-      targetPort: rcon-port-tcp
+      targetPort: rcon-port
       protocol: TCP
     - name: query-port
       port: {{ .Values.rustDedicatedServer.serverQueryPort }}

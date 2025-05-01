@@ -59,7 +59,7 @@ spec:
             - "+rcon.port"
             - "{{ .Values.rustDedicatedServer.rconPort }}"
             - "+rcon.password"
-            - "$RCON_PASSWORD"
+            - "$(RCON_PASSWORD)"
             - "+rcon.web"
             - "{{ .Values.rustDedicatedServer.rconWeb }}"
             - "+app.port"
@@ -74,10 +74,7 @@ spec:
             - name: server-port
               containerPort: {{ .Values.rustDedicatedServer.serverPort }}
               protocol: UDP
-            - name: rcon-port-udp
-              containerPort: {{ .Values.rustDedicatedServer.rconPort }}
-              protocol: UDP
-            - name: rcon-port-tcp
+            - name: rcon-port
               containerPort: {{ .Values.rustDedicatedServer.rconPort }}
               protocol: TCP
             - name: query-port
