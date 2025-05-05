@@ -39,6 +39,12 @@ There is also a `latest-oxide` tag, so you can use this to always run an up-to-d
 This image aims to be a solid base to run any plugin. So please drop me a line if you are missing any Debian package
 for a plugin.
 
+## Rust Web Rcon
+If you want to connect to [Rust](https://rust.facepunch.com/) server console or want to check on the server statistics,
+check out my [Rust Web RCon client](https://github.com/max-pfeiffer/rust-web-rcon) companion project.
+I also provide a Docker container with [Facepunch's websocket Rcon client](https://github.com/Facepunch/webrcon).
+This is already integrated in the docker compose examples.
+
 ## Usage
 ### Configuration
 You can append all [server configuration options](https://www.corrosionhour.com/rust-admin-commands/) as commands
@@ -82,14 +88,14 @@ And show the logs, option `-f` follows the logs:
 docker compose logs -f
 ```
 
-If you want to connect to [Rust](https://rust.facepunch.com/) server console via RCON use the [CLI client](https://github.com/gorcon/rcon-cli):
-```shell
-docker compose run -it --rm rcon-cli
-[+] Creating 1/0
- ✔ Container rust-server  Running                                                                                                                                             0.0s 
-Waiting commands for rust-server:28016 (or type :q to exit)
-> 
-```
+#### Rust Web Rcon
+When spinning up the containers with Docker compose, an instance of the
+[Rust Web RCon client](https://github.com/max-pfeiffer/rust-web-rcon) is started as well.
+
+If you want to connect to [Rust](https://rust.facepunch.com/) server console or want to check on the server statistics,
+point your web browser to: http://localhost
+
+Then enter the address of your server and the Rcon password in the web interface. 
 
 ### Production Deployment
 If you want to deploy to a production (Linux) server, have a look at the

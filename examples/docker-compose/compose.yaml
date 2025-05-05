@@ -36,17 +36,13 @@ services:
         source: server_identity
         target: "/srv/rust/server/${SERVER_NAME}"
 
-  rcon-cli:
-    image: "outdead/rcon:latest"
-    container_name: "rcon-cli"
+  rust-web-rcon:
+    image: "pfeiffermax/rust-web-rcon:latest"
+    container_name: "rust-web-rcon"
     depends_on:
       - rust-server
-    command:
-      - "./rcon"
-      - "--address"
-      - "rust-server:28016"
-      - "--password"
-      - "supersecret"
+    ports:
+      - "80:80/tcp"
 
 volumes:
   server_identity:
