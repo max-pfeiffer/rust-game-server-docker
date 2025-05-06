@@ -27,7 +27,7 @@ services:
       - "+rcon.password"
       - "supersecret"
       - "+rcon.web"
-      - "0"
+      - "1"
     ports:
       - "28015:28015/udp"
       - "28016:28016/tcp"
