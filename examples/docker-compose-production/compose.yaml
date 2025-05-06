@@ -31,7 +31,7 @@ services:
       - "+rcon.password"
       - ${RCON_PASSWORD}
       - "+rcon.web"
-      - "0"
+      - "1"
       - "-logfile"
       - "/var/log/rust-server-${SERVER_NAME}.log"
     ports:
@@ -46,17 +46,13 @@ services:
         target: /var/log
     env_file: .env
 
-  rcon-cli:
-    image: "outdead/rcon:latest"
-    container_name: "rcon-cli"
+  rust-web-rcon:
+    image: "pfeiffermax/rust-web-rcon:latest"
+    container_name: "rust-web-rcon"
     depends_on:
       - rust-server
-    command:
-      - "./rcon"
-      - "--address"
-      - "rust-server:28016"
-      - "--password"
-      - ${RCON_PASSWORD}
+    ports:
+      - "80:80/tcp"
 
 volumes:
   server_identity:
