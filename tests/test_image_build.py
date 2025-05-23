@@ -15,7 +15,7 @@ from build.utils import (
     get_oxide_build_id,
     get_rust_build_id,
 )
-from tests.constants import LATEST_TAG, REGISTRY_PASSWORD, REGISTRY_USERNAME
+from tests.constants import REGISTRY_PASSWORD, REGISTRY_USERNAME
 
 BASIC_AUTH: HTTPBasicAuth = HTTPBasicAuth(REGISTRY_USERNAME, REGISTRY_PASSWORD)
 
@@ -63,7 +63,7 @@ def test_image_build(
     current_rust_server_build_id = get_rust_build_id()
     tag = create_tag(current_rust_server_build_id)
 
-    assert not {tag, LATEST_TAG}.difference(set(response_image_tags))
+    assert not {tag, "latest"}.difference(set(response_image_tags))
 
     # with docker_client.run("pfeiffermax/rust-game-server:latest", command=COMMANDS)
     # as rust_container:
@@ -110,4 +110,4 @@ def test_oxide_image_build(
     current_oxide_build_id = get_oxide_build_id()
     tag = create_oxide_tag(current_oxide_build_id)
 
-    assert not {tag, LATEST_TAG}.difference(set(response_image_tags))
+    assert not {tag, "latest-oxide"}.difference(set(response_image_tags))
