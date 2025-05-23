@@ -65,10 +65,6 @@ def test_image_build(
 
     assert not {tag, "latest"}.difference(set(response_image_tags))
 
-    # with docker_client.run("pfeiffermax/rust-game-server:latest", command=COMMANDS)
-    # as rust_container:
-    #     test = rust_container.state
-
 
 def test_oxide_image_build(
     registry_container: DockerRegistryContainer,
