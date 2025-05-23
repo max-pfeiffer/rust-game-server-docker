@@ -20,7 +20,7 @@ def docker_client() -> DockerClient:
     return DockerClient(debug=True)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def registry_container() -> Generator[DockerRegistryContainer, Any, None]:
     """Provide a Registry container locally for publishing the image.
 
