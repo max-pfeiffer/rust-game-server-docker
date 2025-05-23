@@ -3,6 +3,16 @@ entries:
   rust:
   - apiVersion: v2
     appVersion: latest
+    created: "2025-05-23T10:16:56.663658547Z"
+    description: A Helm chart for running a Rust dedicated server on Kubernetes
+    digest: 279216a3856bee0898380404af084a355309254c84c2fe312296266e39408ed8
+    name: rust
+    type: application
+    urls:
+    - https://github.com/max-pfeiffer/rust-game-server-docker/releases/download/rust-1.0.0/rust-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
+    appVersion: latest
     created: "2025-05-01T14:52:00.499997803Z"
     description: A Helm chart for running a Rust dedicated server on Kubernetes
     digest: e22def7aa8b2751b76f5457c6a23261d8d3dee2e43211779dc67380e10d9b537
@@ -61,4 +71,4 @@ entries:
     urls:
     - https://github.com/max-pfeiffer/rust-game-server-docker/releases/download/rust-0.1.0/rust-0.1.0.tgz
     version: 0.1.0
-generated: "2025-05-01T14:52:00.500026276Z"
+generated: "2025-05-23T10:16:56.663682363Z"
