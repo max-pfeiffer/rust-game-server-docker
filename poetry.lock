@@ -670,6 +670,18 @@ files = [
 ]
 
 [[package]]
+name = "nclib"
+version = "1.0.5"
+description = "Netcat as a library: convienent socket interfaces"
+optional = false
+python-versions = ">=3.5"
+groups = ["dev"]
+files = [
+    {file = "nclib-1.0.5-py3-none-any.whl", hash = "sha256:87951d8355f3fbf3d05abf8e25955191df39bda05cc2428fb755b37617ad883a"},
+    {file = "nclib-1.0.5.tar.gz", hash = "sha256:b0a6c84a52f984e06ed63eb359289bd878c90af12832ba9dc33806da478ca831"},
+]
+
+[[package]]
 name = "nodeenv"
 version = "1.9.1"
 description = "Node.js virtual environment builder"
@@ -1577,4 +1589,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "89c3136b28a7b44777071f0287d5577c997bf00b0f57724b03fb3a65de624eea"
+content-hash = "a6ed52e30bb00d31482e66bbe2d08298000be61ccf4ecc5e4b74fcf408830009"
