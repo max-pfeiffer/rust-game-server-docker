@@ -2,6 +2,10 @@
 A [Helm chart](https://helm.sh/) for running a Rust dedicated server.
 
 ## Installation
+If you want to run Rust on a bare metal Kubernetes cluster, I recommend reading
+[my blog post](https://max-pfeiffer.github.io/blog/hosting-game-servers-on-bare-metal-kubernetes-with-kube-vip.html)
+about that topic.
+
 ### Helm
 Currently, you can run a single server instance with each Helm installation. The installation is done as follows:
 ```shell
@@ -10,7 +14,7 @@ $ helm install rust rust/rust --values your_values.yaml --namespace yournamespac
 ```
 
 ### Argo CD
-I recommend running and deploying the Rust dedicated server with [Argo CD](https://argoproj.github.io/cd/). This way
+I recommend deploying and running the Rust dedicated server with [Argo CD](https://argoproj.github.io/cd/). This way
 you have a declarative installation of your server. It's very easy to manage and update it that way.
 A big plus is also the [Argo CD Image Updater](https://github.com/argoproj-labs/argocd-image-updater). This tool can
 monitor the [Rust Docker Image](https://hub.docker.com/r/pfeiffermax/rust-game-server) and will update your Rust
@@ -44,18 +48,29 @@ startupProbe:
 ```
 
 ### Rust server config
-Tweak the Rust server config to your liking. `hostName` cannot contain spaces. 
+Tweak the Rust server config to your liking. 
 ```yaml
 rustDedicatedServer:
+  # You can use just one single string without any spaces as this is specified as command line option.
   hostName: "Vanilla-Rust-Server"
+  # Rust main server port
   serverPort: "28015"
+  # Rust Rcon port
   rconPort: "28016"
+  # Rust server query port
   serverQueryPort: "28017"
+  # Port for Rust+ app
   appPort: "28082"
+  # Maximum number of players
   maxPlayers: "20"
+  # World size
   worldSize: "3000"
+  # Map seed, always use a string here as Helm number conversion might produce incompatible strings.
   seed: "666"
-  rconWeb: "0"
-  rconPassword: "password"
-  volumeStorageSize: 1Gi
+  # Use 1 to switch on websocket rcon, 0 to switch off websocket rcon
+  rconWeb: "1"
+  # Rcon Password
+  rconPassword: "yourpassword"
+  # Volume size for server identity directory. Rust server stores it's config, saves and blueprints there
+  volumeStorageSize: "1Gi"
 ```
