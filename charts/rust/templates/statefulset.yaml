@@ -6,7 +6,7 @@ metadata:
     {{- include "rust.labels" . | nindent 4 }}
 spec:
   serviceName: {{ include "rust.fullname" . }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       {{- include "rust.selectorLabels" . | nindent 6 }}
@@ -84,8 +84,11 @@ spec:
               containerPort: {{ .Values.rustDedicatedServer.appPort }}
               protocol: TCP
           startupProbe:
+            initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
             failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+            successThreshold: {{ .Values.startupProbe.successThreshold }}
             exec:
               command:
                 - "nc"
@@ -93,6 +96,11 @@ spec:
                 - "127.0.0.1"
                 - "{{ .Values.rustDedicatedServer.serverPort }}"
           livenessProbe:
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
             exec:
               command:
                 - "nc"

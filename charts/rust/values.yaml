@@ -2,9 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
-replicaCount: 1
-
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   repository: "pfeiffermax/rust-game-server"
@@ -53,7 +50,7 @@ securityContext: {}
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: ClusterIP
+  type: LoadBalancer
   # See: https://kubernetes.io/docs/concepts/services-networking/service/#traffic-policies
   externalTrafficPolicy: Cluster
   metadata:
@@ -77,22 +74,42 @@ tolerations: []
 
 affinity: {}
 
-# Rust dedicated server startup is slow, so you might need to bump up these values for larger worldsize
+# Rust dedicated server startup is slow, so you might need to bump up periodSeconds and failureThreshold
+# for larger worldsize.
 startupProbe:
+  initialDelaySeconds: 0
   periodSeconds: 10
+  timeoutSeconds: 1
   failureThreshold: 100
+  successThreshold: 1
+
+livenessProbe:
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 3
+  successThreshold: 1
 
 rustDedicatedServer:
-  hostName: Vanilla-Rust-Server
-  serverPort: 28015
-  rconPort: 28016
-  serverQueryPort: 28017
-  appPort: 28082
-  maxPlayers: 20
-  worldSize: 3000
-  seed: 666
-  # Use 1 to switch on web rcon, 0 to switch off web rcon. The protocol (TCP or UDP) is configured accordingly
-  # for the rconPort.
-  rconWeb: 1
-  rconPassword: password
-  volumeStorageSize: 1Gi
+  # You can use just one single string without any spaces as this is specified as command line option.
+  hostName: "Vanilla-Rust-Server"
+  # Rust main server port
+  serverPort: "28015"
+  # Rust Rcon port
+  rconPort: "28016"
+  # Rust server query port
+  serverQueryPort: "28017"
+  # Port for Rust+ app
+  appPort: "28082"
+  # Maximum number of players
+  maxPlayers: "20"
+  # World size
+  worldSize: "3000"
+  # Map seed, always use a string here as Helm number conversion might produce incompatible strings.
+  seed: "666"
+  # Use 1 to switch on websocket rcon, 0 to switch off websocket rcon
+  rconWeb: "1"
+  # Rcon Password
+  rconPassword: "yourpassword"
+  # Volume size for server identity directory. Rust server stores it's config, saves and blueprints there
+  volumeStorageSize: "1Gi"
