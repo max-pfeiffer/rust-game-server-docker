@@ -5,12 +5,22 @@ from typing import Any
 
 import pytest
 from click.testing import CliRunner
+from python_on_whales import DockerClient
 from testcontainers.registry import DockerRegistryContainer
 
 from tests.constants import REGISTRY_PASSWORD, REGISTRY_USERNAME
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
+def docker_client() -> DockerClient:
+    """Provide the Python on Whales docker client.
+
+    :return:
+    """
+    return DockerClient(debug=True)
+
+
+@pytest.fixture(scope="session")
 def registry_container() -> Generator[DockerRegistryContainer, Any, None]:
     """Provide a Registry container locally for publishing the image.
 

@@ -2,6 +2,7 @@
 
 from click.testing import CliRunner, Result
 from furl import furl
+from python_on_whales import DockerClient
 from requests import Response, get
 from requests.auth import HTTPBasicAuth
 from testcontainers.registry import DockerRegistryContainer
@@ -22,11 +23,13 @@ BASIC_AUTH: HTTPBasicAuth = HTTPBasicAuth(REGISTRY_USERNAME, REGISTRY_PASSWORD)
 def test_image_build(
     registry_container: DockerRegistryContainer,
     cli_runner: CliRunner,
+    docker_client: DockerClient,
 ):
     """Test building the Docker image.
 
+    :param registry_container:
+    :param cli_runner:
     :param docker_client:
-    :param buildx_builder:
     :return:
     """
     result: Result = cli_runner.invoke(
@@ -35,6 +38,7 @@ def test_image_build(
             "DOCKER_HUB_USERNAME": REGISTRY_USERNAME,
             "DOCKER_HUB_PASSWORD": REGISTRY_PASSWORD,
             "REGISTRY": registry_container.get_registry(),
+            "PUBLISH_MANUALLY": "1",
         },
     )
     assert result.exit_code == 0
@@ -60,6 +64,10 @@ def test_image_build(
     tag = create_tag(current_rust_server_build_id)
 
     assert not {tag, LATEST_TAG}.difference(set(response_image_tags))
+
+    # with docker_client.run("pfeiffermax/rust-game-server:latest", command=COMMANDS)
+    # as rust_container:
+    #     test = rust_container.state
 
 
 def test_oxide_image_build(
