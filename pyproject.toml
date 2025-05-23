@@ -8,7 +8,7 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
-click = "8.1.8"
+click = "8.2.1"
 python-on-whales = "0.76.1"
 steam = {git = "https://github.com/detiam/steam_websocket.git", branch = "master", extras=["client"]}
 
@@ -18,8 +18,9 @@ furl = "2.1.4"
 pre-commit = "4.2.0"
 pytest = "8.3.5"
 pytest-cov = "6.1.1"
-ruff = "0.11.8"
+ruff = "0.11.11"
 testcontainers = "4.10.0"
+nclib = "1.0.5"
 
 [tool.ruff]
 exclude = [".venv"]

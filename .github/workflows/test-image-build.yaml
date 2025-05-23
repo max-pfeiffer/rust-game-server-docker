@@ -1,25 +1,14 @@
-name: Pipeline
+name: Test Image Build
 
-on: push
+on:
+  push:
+    paths:
+      - build/**
+      - tests/**
 
 jobs:
-  code-quality:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Set up Python environment
-        uses: ./.github/actions/setup-environment
-      - name: Install dependencies
-        run: |
-          poetry install --with dev --no-interaction --no-root
-      - name: Run ruff
-        run: |
-          poetry run pre-commit run -a 
-
   test-image-build:
     runs-on: ubuntu-24.04
-    needs: code-quality
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
