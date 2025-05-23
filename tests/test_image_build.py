@@ -6,8 +6,8 @@ from requests import Response, get
 from requests.auth import HTTPBasicAuth
 from testcontainers.registry import DockerRegistryContainer
 
-from build import publish
-from build.oxide import publish as oxide_publish
+from build.oxide.publish import main as oxide_main
+from build.publish import main
 from build.utils import (
     create_oxide_tag,
     create_tag,
@@ -30,7 +30,7 @@ def test_image_build(
     :return:
     """
     result: Result = cli_runner.invoke(
-        publish,
+        main,
         env={
             "DOCKER_HUB_USERNAME": REGISTRY_USERNAME,
             "DOCKER_HUB_PASSWORD": REGISTRY_PASSWORD,
@@ -73,7 +73,7 @@ def test_oxide_image_build(
     :return:
     """
     result: Result = cli_runner.invoke(
-        oxide_publish,
+        oxide_main,
         env={
             "DOCKER_HUB_USERNAME": REGISTRY_USERNAME,
             "DOCKER_HUB_PASSWORD": REGISTRY_PASSWORD,
