@@ -1,28 +1,32 @@
 """Basic test fixtures."""
 
+from collections.abc import Generator
+from typing import Any
+
 import pytest
-from python_on_whales import Builder, DockerClient
+from click.testing import CliRunner
+from testcontainers.registry import DockerRegistryContainer
+
+from tests.constants import REGISTRY_PASSWORD, REGISTRY_USERNAME
 
 
-@pytest.fixture(scope="session")
-def docker_client() -> DockerClient:
-    """Provide the Python on Whales docker client.
+@pytest.fixture(scope="function")
+def registry_container() -> Generator[DockerRegistryContainer, Any, None]:
+    """Provide a Registry container locally for publishing the image.
 
     :return:
     """
-    return DockerClient(debug=True)
+    with DockerRegistryContainer(
+        username=REGISTRY_USERNAME, password=REGISTRY_PASSWORD
+    ).with_bind_ports(5000, 5000) as registry_container:
+        yield registry_container
 
 
 @pytest.fixture(scope="session")
-def buildx_builder(docker_client: DockerClient) -> Builder:
-    """Provide a Pyhton on Whales BuildX builder instance.
+def cli_runner() -> CliRunner:
+    """Provide CLI runner for testing click CLI.
 
-    :param docker_client:
     :return:
     """
-    builder: Builder = docker_client.buildx.create(
-        driver="docker-container", driver_options=dict(network="host")
-    )
-    yield builder
-    docker_client.buildx.stop(builder)
-    docker_client.buildx.remove(builder)
+    runner = CliRunner()
+    return runner
