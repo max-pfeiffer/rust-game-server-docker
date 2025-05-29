@@ -63,7 +63,8 @@ def test_image_build(
     current_rust_server_build_id = get_rust_build_id()
     tag = create_tag(current_rust_server_build_id)
 
-    assert not {tag, "latest"}.difference(set(response_image_tags))
+    assert tag in response_image_tags
+    assert "latest" in response_image_tags
 
 
 def test_oxide_image_build(
@@ -106,4 +107,5 @@ def test_oxide_image_build(
     current_oxide_build_id = get_oxide_build_id()
     tag = create_oxide_tag(current_oxide_build_id)
 
-    assert not {tag, "latest-oxide"}.difference(set(response_image_tags))
+    assert tag in response_image_tags
+    assert "latest-oxide" in response_image_tags
