@@ -83,6 +83,7 @@ def test_oxide_image_build(
             "DOCKER_HUB_USERNAME": REGISTRY_USERNAME,
             "DOCKER_HUB_PASSWORD": REGISTRY_PASSWORD,
             "REGISTRY": registry_container.get_registry(),
+            "PUBLISH_MANUALLY": "1",
         },
     )
     assert result.exit_code == 0
