@@ -1,20 +1,19 @@
 """Tests Docker image build."""
 
-from datetime import date
-
+from click.testing import CliRunner, Result
 from furl import furl
-from python_on_whales import Builder, DockerClient
+from python_on_whales import DockerClient
 from requests import Response, get
 from requests.auth import HTTPBasicAuth
 from testcontainers.registry import DockerRegistryContainer
 
-from build.constants import PLATFORMS
+from build.oxide.publish import main as oxide_main
+from build.publish import main
 from build.utils import (
-    get_context,
-    get_image_reference,
+    create_oxide_tag,
+    create_tag,
     get_oxide_build_id,
-    get_oxide_context,
-    oxide_zip_file_url,
+    get_rust_build_id,
 )
 from tests.constants import REGISTRY_PASSWORD, REGISTRY_USERNAME
 
@@ -22,63 +21,55 @@ BASIC_AUTH: HTTPBasicAuth = HTTPBasicAuth(REGISTRY_USERNAME, REGISTRY_PASSWORD)
 
 
 def test_image_build(
+    registry_container: DockerRegistryContainer,
+    cli_runner: CliRunner,
     docker_client: DockerClient,
-    buildx_builder: Builder,
 ):
     """Test building the Docker image.
 
+    :param registry_container:
+    :param cli_runner:
     :param docker_client:
-    :param buildx_builder:
     :return:
     """
-    with DockerRegistryContainer(
-        username=REGISTRY_USERNAME, password=REGISTRY_PASSWORD
-    ).with_bind_ports(5000, 5000) as registry_container:
-        registry: str = registry_container.get_registry()
+    result: Result = cli_runner.invoke(
+        main,
+        env={
+            "DOCKER_HUB_USERNAME": REGISTRY_USERNAME,
+            "DOCKER_HUB_PASSWORD": REGISTRY_PASSWORD,
+            "REGISTRY": registry_container.get_registry(),
+            "PUBLISH_MANUALLY": "1",
+        },
+    )
+    assert result.exit_code == 0
 
-        date_tag: str = date.today().isoformat()
-        latest_tag: str = "latest"
+    furl_item: furl = furl(f"http://{registry_container.get_registry()}")
+    furl_item.path /= "v2/_catalog"
 
-        image_reference_version: str = get_image_reference(registry, date_tag)
-        image_reference_latest: str = get_image_reference(registry, latest_tag)
+    response: Response = get(furl_item.url, auth=BASIC_AUTH)
 
-        docker_client.login(
-            server=registry,
-            username=REGISTRY_USERNAME,
-            password=REGISTRY_PASSWORD,
-        )
+    assert response.status_code == 200
+    assert response.json() == {"repositories": ["pfeiffermax/rust-game-server"]}
 
-        docker_client.buildx.build(
-            context_path=get_context(),
-            tags=[image_reference_version, image_reference_latest],
-            platforms=PLATFORMS,
-            builder=buildx_builder,
-            push=True,
-        )
+    furl_item: furl = furl(f"http://{registry_container.get_registry()}")
+    furl_item.path /= "v2/pfeiffermax/rust-game-server/tags/list"
 
-        furl_item: furl = furl(f"http://{registry_container.get_registry()}")
-        furl_item.path /= "v2/_catalog"
+    response: Response = get(furl_item.url, auth=BASIC_AUTH)
 
-        response: Response = get(furl_item.url, auth=BASIC_AUTH)
+    assert response.status_code == 200
 
-        assert response.status_code == 200
-        assert response.json() == {"repositories": ["pfeiffermax/rust-game-server"]}
+    response_image_tags: list[str] = response.json()["tags"]
 
-        furl_item: furl = furl(f"http://{registry_container.get_registry()}")
-        furl_item.path /= "v2/pfeiffermax/rust-game-server/tags/list"
+    current_rust_server_build_id = get_rust_build_id()
+    tag = create_tag(current_rust_server_build_id)
 
-        response: Response = get(furl_item.url, auth=BASIC_AUTH)
-
-        assert response.status_code == 200
-
-        response_image_tags: list[str] = response.json()["tags"]
-
-        assert not {date_tag, latest_tag}.difference(set(response_image_tags))
+    assert tag in response_image_tags
+    assert "latest" in response_image_tags
 
 
 def test_oxide_image_build(
-    docker_client: DockerClient,
-    buildx_builder: Builder,
+    registry_container: DockerRegistryContainer,
+    cli_runner: CliRunner,
 ):
     """Test building the Docker image.
 
@@ -86,52 +77,36 @@ def test_oxide_image_build(
     :param buildx_builder:
     :return:
     """
-    with DockerRegistryContainer(
-        username=REGISTRY_USERNAME, password=REGISTRY_PASSWORD
-    ).with_bind_ports(5000, 5000) as registry_container:
-        registry: str = registry_container.get_registry()
+    result: Result = cli_runner.invoke(
+        oxide_main,
+        env={
+            "DOCKER_HUB_USERNAME": REGISTRY_USERNAME,
+            "DOCKER_HUB_PASSWORD": REGISTRY_PASSWORD,
+            "REGISTRY": registry_container.get_registry(),
+            "PUBLISH_MANUALLY": "1",
+        },
+    )
+    assert result.exit_code == 0
 
-        current_oxide_build_id = get_oxide_build_id()
+    furl_item: furl = furl(f"http://{registry_container.get_registry()}")
+    furl_item.path /= "v2/_catalog"
 
-        date_tag: str = f"oxide-{date.today().isoformat()}"
-        latest_tag: str = "oxide-latest"
+    response: Response = get(furl_item.url, auth=BASIC_AUTH)
 
-        image_reference_version: str = get_image_reference(registry, date_tag)
-        image_reference_latest: str = get_image_reference(registry, latest_tag)
+    assert response.status_code == 200
+    assert response.json() == {"repositories": ["pfeiffermax/rust-game-server"]}
 
-        docker_client.login(
-            server=registry,
-            username=REGISTRY_USERNAME,
-            password=REGISTRY_PASSWORD,
-        )
+    furl_item: furl = furl(f"http://{registry_container.get_registry()}")
+    furl_item.path /= "v2/pfeiffermax/rust-game-server/tags/list"
 
-        docker_client.buildx.build(
-            context_path=get_oxide_context(),
-            build_args={
-                "OXIDE_ZIP_FILE_URL": oxide_zip_file_url(current_oxide_build_id),
-            },
-            target="production-image",
-            tags=[image_reference_version, image_reference_latest],
-            platforms=PLATFORMS,
-            builder=buildx_builder,
-            push=True,
-        )
+    response: Response = get(furl_item.url, auth=BASIC_AUTH)
 
-        furl_item: furl = furl(f"http://{registry_container.get_registry()}")
-        furl_item.path /= "v2/_catalog"
+    assert response.status_code == 200
 
-        response: Response = get(furl_item.url, auth=BASIC_AUTH)
+    response_image_tags: list[str] = response.json()["tags"]
 
-        assert response.status_code == 200
-        assert response.json() == {"repositories": ["pfeiffermax/rust-game-server"]}
+    current_oxide_build_id = get_oxide_build_id()
+    tag = create_oxide_tag(current_oxide_build_id)
 
-        furl_item: furl = furl(f"http://{registry_container.get_registry()}")
-        furl_item.path /= "v2/pfeiffermax/rust-game-server/tags/list"
-
-        response: Response = get(furl_item.url, auth=BASIC_AUTH)
-
-        assert response.status_code == 200
-
-        response_image_tags: list[str] = response.json()["tags"]
-
-        assert not {date_tag, latest_tag}.difference(set(response_image_tags))
+    assert tag in response_image_tags
+    assert "latest-oxide" in response_image_tags

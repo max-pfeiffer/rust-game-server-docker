@@ -31,10 +31,18 @@ from build.utils import (
 @click.option(
     "--registry", envvar="REGISTRY", default="docker.io", help="Docker registry"
 )
+@click.option(
+    "--publish-manually",
+    envvar="PUBLISH_MANUALLY",
+    is_flag=True,
+    help="Flag for building the Docker image manually, "
+    "overrides the check for existing image tags",
+)
 def main(
     docker_hub_username: str,
     docker_hub_password: str,
     registry: str,
+    publish_manually: bool,
 ) -> None:
     """Build and publish image to Docker Hub.
 
@@ -50,7 +58,7 @@ def main(
     current_oxide_build_id = get_oxide_build_id()
     click.echo(f"Current Oxide build ID: {current_oxide_build_id}")
 
-    if tag_exists(current_oxide_build_id):
+    if not publish_manually and tag_exists(current_oxide_build_id):
         click.echo(
             "Image for this build ID already exists. Skipping Docker image build..."
         )

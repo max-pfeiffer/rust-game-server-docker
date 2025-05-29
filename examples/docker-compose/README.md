@@ -19,9 +19,9 @@ And show the logs, option `-f` follows the logs:
 docker compose logs -f
 ```
 
-## Rust Web Rcon
+## Rust WebSocket Rcon
 When spinning up the containers with Docker compose, an instance of the
-[Rust Web RCon client](https://github.com/max-pfeiffer/rust-web-rcon) is started as well.
+[Rust Websocket RCon client](https://github.com/max-pfeiffer/rust-web-rcon) is started as well.
 
 If you want to connect to [Rust](https://rust.facepunch.com/) server console or want to check on the server statistics,
 just point your web browser to: http://localhost
