@@ -40,10 +40,10 @@ There is also a `latest-oxide` tag, so you can use this to always run an up-to-d
 This image aims to be a solid base to run any plugin. So please drop me a line if you are missing any Debian package
 for a plugin.
 
-## Rust Web Rcon
+## Rust Websocket Rcon
 If you want to connect to [Rust](https://rust.facepunch.com/) server console or want to check on the server statistics,
-check out my [Rust Web RCon client](https://github.com/max-pfeiffer/rust-web-rcon) companion project.
-I also provide a Docker container with [Facepunch's websocket Rcon client](https://github.com/Facepunch/webrcon).
+check out my [Rust Websocket RCon client](https://github.com/max-pfeiffer/rust-web-rcon) companion project.
+I provide a Docker container with [Facepunch's websocket Rcon client](https://github.com/Facepunch/webrcon).
 This is already integrated in the docker compose examples.
 
 ## Usage
@@ -52,7 +52,7 @@ You can append all [server configuration options](https://www.corrosionhour.com/
 when running `RustDedicated` binary. Use the regular syntax like `+server.ip 0.0.0.0` or `-logfile`.
 
 As the Rust server is running in the Docker container as a stateless application, you want to have all stateful server
-data (map, config, blueprints etc.) stored in a [Docker volume](https://docs.docker.com/storage/volumes/)
+data (map, config, blueprints, etc.) stored in a [Docker volume](https://docs.docker.com/storage/volumes/)
 which is persisted outside of the container. This can be configured with `+server.identity`: you can specify the
 directory where this data is stored. You need to make sure that this directory is mounted on
 a [Docker Volume](https://docs.docker.com/storage/volumes/).
@@ -89,9 +89,9 @@ And show the logs, option `-f` follows the logs:
 docker compose logs -f
 ```
 
-#### Rust Web Rcon
+#### Rust Websocket Rcon
 When spinning up the containers with Docker compose, an instance of the
-[Rust Web RCon client](https://github.com/max-pfeiffer/rust-web-rcon) is started as well.
+[Rust Websocket RCon client](https://github.com/max-pfeiffer/rust-web-rcon) is started as well.
 
 If you want to connect to [Rust](https://rust.facepunch.com/) server console or want to check on the server statistics,
 point your web browser to: http://localhost

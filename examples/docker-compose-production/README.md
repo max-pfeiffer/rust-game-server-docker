@@ -39,9 +39,9 @@ image and starts the server. And you are done with your server update. :smiley:
 For instance, you can automate this with a cron job. Check out [rust-server-update.sh](rust-server-update.sh), which is
 a simple script you can add as a daily job to your `/etc/crontab`. That way you ensure your server is always up-to-date. 
 
-## Rust Web Rcon
+## Rust Websocket Rcon
 When spinning up the containers with Docker compose, an instance of the
-[Rust Web RCon client](https://github.com/max-pfeiffer/rust-web-rcon) is started as well.
+[Rust Websocket RCon client](https://github.com/max-pfeiffer/rust-web-rcon) is started as well.
 
 If you want to connect to [Rust](https://rust.facepunch.com/) server console or want to check on the server statistics,
 just point your web browser to: http://localhost
