@@ -51,7 +51,7 @@ def test_image_build(
     furl_item.path /= "v2/_catalog"
 
     # response: Response = get(furl_item.url, auth=BASIC_AUTH)
-    response: Response = get(furl_item.url, headers=HEADERS)
+    response: Response = get(furl_item.url)
 
     assert response.status_code == 200
     assert response.json() == {"repositories": ["pfeiffermax/rust-game-server"]}
@@ -60,7 +60,7 @@ def test_image_build(
     furl_item.path /= "v2/pfeiffermax/rust-game-server/tags/list"
 
     # response: Response = get(furl_item.url, auth=BASIC_AUTH)
-    response: Response = get(furl_item.url, headers=HEADERS)
+    response: Response = get(furl_item.url)
     assert response.status_code == 200
 
     assert response.status_code == 200
@@ -99,7 +99,7 @@ def test_oxide_image_build(
     furl_item.path /= "v2/_catalog"
 
     # response: Response = get(furl_item.url, auth=BASIC_AUTH)
-    response: Response = get(furl_item.url, headers=HEADERS)
+    response: Response = get(furl_item.url)
 
     assert response.status_code == 200
     assert response.json() == {"repositories": ["pfeiffermax/rust-game-server"]}
@@ -108,7 +108,7 @@ def test_oxide_image_build(
     furl_item.path /= "v2/pfeiffermax/rust-game-server/tags/list"
 
     # response: Response = get(furl_item.url, auth=BASIC_AUTH)
-    response: Response = get(furl_item.url, headers=HEADERS)
+    response: Response = get(furl_item.url)
 
     assert response.status_code == 200
 
