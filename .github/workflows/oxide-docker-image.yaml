@@ -2,10 +2,15 @@ name: Oxide Docker Image
 
 on:
   workflow_call:
+    inputs:
+      PUBLISH_MANUALLY:
+        type: boolean
+        default: false
+        required: false
     secrets:
       DOCKER_HUB_USERNAME:
         required: true
-      DOCKER_HUB_PASSWORD:
+      DOCKER_HUB_TOKEN:
         required: true
 
 jobs:
@@ -21,6 +26,8 @@ jobs:
           poetry install --without dev --no-interaction --no-root
       - name: Build and publish Images to Docker Hub
         env:
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+          PUBLISH_MANUALLY: ${{ inputs.PUBLISH_MANUALLY }}
         run: |          
           poetry run python -m build.oxide.publish
