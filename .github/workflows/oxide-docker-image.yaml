@@ -21,7 +21,6 @@ jobs:
           poetry install --without dev --no-interaction --no-root
       - name: Build and publish Images to Docker Hub
         env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         run: |          
           poetry run python -m build.oxide.publish

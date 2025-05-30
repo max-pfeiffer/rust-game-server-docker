@@ -15,7 +15,7 @@ from build.utils import (
     get_oxide_build_id,
     get_rust_build_id,
 )
-from tests.constants import REGISTRY_PASSWORD, REGISTRY_USERNAME
+from tests.constants import REGISTRY_PASSWORD, REGISTRY_TOKEN, REGISTRY_USERNAME
 
 BASIC_AUTH: HTTPBasicAuth = HTTPBasicAuth(REGISTRY_USERNAME, REGISTRY_PASSWORD)
 
@@ -35,8 +35,7 @@ def test_image_build(
     result: Result = cli_runner.invoke(
         main,
         env={
-            "DOCKER_HUB_USERNAME": REGISTRY_USERNAME,
-            "DOCKER_HUB_PASSWORD": REGISTRY_PASSWORD,
+            "DOCKER_HUB_TOKEN": REGISTRY_TOKEN,
             "REGISTRY": registry_container.get_registry(),
             "PUBLISH_MANUALLY": "1",
         },
@@ -80,8 +79,7 @@ def test_oxide_image_build(
     result: Result = cli_runner.invoke(
         oxide_main,
         env={
-            "DOCKER_HUB_USERNAME": REGISTRY_USERNAME,
-            "DOCKER_HUB_PASSWORD": REGISTRY_PASSWORD,
+            "DOCKER_HUB_TOKEN": REGISTRY_TOKEN,
             "REGISTRY": registry_container.get_registry(),
             "PUBLISH_MANUALLY": "1",
         },

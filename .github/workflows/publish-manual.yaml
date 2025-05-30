@@ -9,5 +9,4 @@ jobs:
     with:
       PUBLISH_MANUALLY: true
     secrets:
-      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-      DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}

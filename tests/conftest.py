@@ -8,8 +8,6 @@ from click.testing import CliRunner
 from python_on_whales import DockerClient
 from testcontainers.registry import DockerRegistryContainer
 
-from tests.constants import REGISTRY_PASSWORD, REGISTRY_USERNAME
-
 
 @pytest.fixture(scope="session")
 def docker_client() -> DockerClient:
@@ -26,9 +24,7 @@ def registry_container() -> Generator[DockerRegistryContainer, Any, None]:
 
     :return:
     """
-    with DockerRegistryContainer(
-        username=REGISTRY_USERNAME, password=REGISTRY_PASSWORD
-    ).with_bind_ports(5000, 5000) as registry_container:
+    with DockerRegistryContainer().with_bind_ports(5000, 5000) as registry_container:
         yield registry_container
 
 

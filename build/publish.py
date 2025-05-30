@@ -18,14 +18,9 @@ from build.utils import (
 
 @click.command()
 @click.option(
-    "--docker-hub-username",
-    envvar="DOCKER_HUB_USERNAME",
-    help="Docker Hub username",
-)
-@click.option(
-    "--docker-hub-password",
-    envvar="DOCKER_HUB_PASSWORD",
-    help="Docker Hub password",
+    "--docker-hub-token",
+    envvar="DOCKER_HUB_TOKEN",
+    help="Docker Hub token",
 )
 @click.option(
     "--registry", envvar="REGISTRY", default="docker.io", help="Docker registry"
@@ -38,15 +33,13 @@ from build.utils import (
     "overrides the check for existing image tags",
 )
 def main(
-    docker_hub_username: str,
-    docker_hub_password: str,
+    docker_hub_token: str,
     registry: str,
     publish_manually: bool,
 ) -> None:
     """Build and publish image to Docker Hub.
 
-    :param docker_hub_username:
-    :param docker_hub_password:
+    :param docker_hub_token:
     :param registry:
     :param publish_manually:
     :return:
@@ -82,8 +75,7 @@ def main(
 
         docker_client.login(
             server=registry,
-            username=docker_hub_username,
-            password=docker_hub_password,
+            password=docker_hub_token,
         )
 
         docker_client.buildx.build(
