@@ -27,7 +27,7 @@ def registry_container() -> Generator[DockerRegistryContainer, Any, None]:
     with (
         DockerRegistryContainer()
         .with_env("REGISTRY_AUTH_SILLY_REALM", "test-realm")
-        .with_env("REGISTRY_AUTH_SILLY_SERVICE", "TEST-SERVICE")
+        .with_env("REGISTRY_AUTH_SILLY_SERVICE", "test-service")
         .with_bind_ports(5000, 5000) as registry_container
     ):
         yield registry_container

@@ -19,6 +19,10 @@ from tests.constants import REGISTRY_PASSWORD, REGISTRY_TOKEN, REGISTRY_USERNAME
 
 BASIC_AUTH: HTTPBasicAuth = HTTPBasicAuth(REGISTRY_USERNAME, REGISTRY_PASSWORD)
 
+HEADERS: dict[str, str] = {
+    "Authorization": REGISTRY_TOKEN,
+}
+
 
 def test_image_build(
     registry_container: DockerRegistryContainer,
@@ -35,6 +39,7 @@ def test_image_build(
     result: Result = cli_runner.invoke(
         main,
         env={
+            "DOCKER_HUB_USERNAME": REGISTRY_USERNAME,
             "DOCKER_HUB_TOKEN": REGISTRY_TOKEN,
             "REGISTRY": registry_container.get_registry(),
             "PUBLISH_MANUALLY": "1",
@@ -45,7 +50,8 @@ def test_image_build(
     furl_item: furl = furl(f"http://{registry_container.get_registry()}")
     furl_item.path /= "v2/_catalog"
 
-    response: Response = get(furl_item.url, auth=BASIC_AUTH)
+    # response: Response = get(furl_item.url, auth=BASIC_AUTH)
+    response: Response = get(furl_item.url, headers=HEADERS)
 
     assert response.status_code == 200
     assert response.json() == {"repositories": ["pfeiffermax/rust-game-server"]}
@@ -53,7 +59,9 @@ def test_image_build(
     furl_item: furl = furl(f"http://{registry_container.get_registry()}")
     furl_item.path /= "v2/pfeiffermax/rust-game-server/tags/list"
 
-    response: Response = get(furl_item.url, auth=BASIC_AUTH)
+    # response: Response = get(furl_item.url, auth=BASIC_AUTH)
+    response: Response = get(furl_item.url, headers=HEADERS)
+    assert response.status_code == 200
 
     assert response.status_code == 200
 
@@ -79,6 +87,7 @@ def test_oxide_image_build(
     result: Result = cli_runner.invoke(
         oxide_main,
         env={
+            "DOCKER_HUB_USERNAME": REGISTRY_USERNAME,
             "DOCKER_HUB_TOKEN": REGISTRY_TOKEN,
             "REGISTRY": registry_container.get_registry(),
             "PUBLISH_MANUALLY": "1",
@@ -89,7 +98,8 @@ def test_oxide_image_build(
     furl_item: furl = furl(f"http://{registry_container.get_registry()}")
     furl_item.path /= "v2/_catalog"
 
-    response: Response = get(furl_item.url, auth=BASIC_AUTH)
+    # response: Response = get(furl_item.url, auth=BASIC_AUTH)
+    response: Response = get(furl_item.url, headers=HEADERS)
 
     assert response.status_code == 200
     assert response.json() == {"repositories": ["pfeiffermax/rust-game-server"]}
@@ -97,7 +107,8 @@ def test_oxide_image_build(
     furl_item: furl = furl(f"http://{registry_container.get_registry()}")
     furl_item.path /= "v2/pfeiffermax/rust-game-server/tags/list"
 
-    response: Response = get(furl_item.url, auth=BASIC_AUTH)
+    # response: Response = get(furl_item.url, auth=BASIC_AUTH)
+    response: Response = get(furl_item.url, headers=HEADERS)
 
     assert response.status_code == 200
 
