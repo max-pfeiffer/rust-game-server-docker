@@ -18,7 +18,7 @@ furl = "2.1.4"
 pre-commit = "4.2.0"
 pytest = "8.3.5"
 pytest-cov = "6.1.1"
-ruff = "0.11.11"
+ruff = "0.11.12"
 testcontainers = "4.10.0"
 nclib = "1.0.5"
 
