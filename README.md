@@ -117,3 +117,6 @@ on how to do that using [kube-vip](https://kube-vip.io/).
 * [Official Rust Wiki](https://wiki.facepunch.com/rust/)
 * [Valve Wiki](https://developer.valvesoftware.com/wiki/Rust_Dedicated_Server)
 * [Admin commands list](https://www.corrosionhour.com/rust-admin-commands/)
+
+## Other Game Server Projects
+* [Valheim dedicated server](https://github.com/max-pfeiffer/valheim-dedicated-server-docker-helm)
