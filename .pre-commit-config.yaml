@@ -6,19 +6,10 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
       - id: check-added-large-files
-  - repo: local
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.1
     hooks:
       - id: ruff
-        name: ruff
-        entry: ruff check
-        language: python
-        types_or: [python, pyi]
-        args: ["--fix", "--config", "pyproject.toml", "build", "tests"]
-        require_serial: true
+        args: ["--fix", "--exit-non-zero-on-fix", "--config", "pyproject.toml", "build", "tests"]
       - id: ruff-format
-        name: ruff-format
-        entry: ruff format
-        language: python
-        types_or: [python, pyi]
         args: ["--config", "pyproject.toml", "build", "tests"]
-        require_serial: true
