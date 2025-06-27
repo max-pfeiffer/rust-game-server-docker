@@ -42,7 +42,7 @@ for a plugin.
 
 ## Rust Websocket Rcon
 If you want to connect to [Rust](https://rust.facepunch.com/) server console or want to check on the server statistics,
-check out my [Rust Websocket RCon client](https://github.com/max-pfeiffer/rust-web-rcon) companion project.
+check out my [Rust Websocket Rcon client](https://github.com/max-pfeiffer/rust-web-rcon) companion project.
 I provide a Docker container with [Facepunch's websocket Rcon client](https://github.com/Facepunch/webrcon).
 This is already integrated in the docker compose examples.
 
