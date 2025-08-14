@@ -105,6 +105,8 @@ rustDedicatedServer:
   maxPlayers: "20"
   # World size
   worldSize: "3000"
+  # Game mode. Options: vanilla, softcore, hardcore, weapontest, primitive
+  gameMode: "vanilla"
   # Map seed, always use a string here as Helm number conversion might produce incompatible strings.
   seed: "666"
   # Use 1 to switch on websocket rcon, 0 to switch off websocket rcon
