@@ -1,6 +1,10 @@
 name: Code Quality
 
-on: push
+on:
+  push:
+    paths:
+      - build/**
+      - tests/**
 
 jobs:
   code-quality:

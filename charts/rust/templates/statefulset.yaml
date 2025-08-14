@@ -49,7 +49,7 @@ spec:
             - "+server.worldsize"
             - "{{ .Values.rustDedicatedServer.worldSize }}"
             - "+server.gamemode"
-            - "vanilla"
+            - "{{ .Values.rustDedicatedServer.gameMode }}"
             - "+server.seed"
             - "{{ .Values.rustDedicatedServer.seed }}"
             - "+server.identity"
@@ -68,7 +68,7 @@ spec:
             - name: RCON_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "rust.fullname" . }}
+                  name: {{ ternary (include "rust.fullname" .) .Values.rustDedicatedServer.existingSecret (empty .Values.rustDedicatedServer.existingSecret) }}
                   key: rconPassword
           ports:
             - name: server-port
