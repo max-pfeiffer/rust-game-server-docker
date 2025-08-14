@@ -113,3 +113,7 @@ rustDedicatedServer:
   rconPassword: "yourpassword"
   # Volume size for server identity directory. Rust server stores it's config, saves and blueprints there
   volumeStorageSize: "1Gi"
+  # Name of the existing secret to use for the rconPassword.
+  # If this is set, rustDedicatedServer.rconPassword will be ignored.
+  # The existing secret needs to have stored Rust rconPassword under the key rconPassword.
+  existingSecret: ""
