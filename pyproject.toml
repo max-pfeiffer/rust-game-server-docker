@@ -13,7 +13,7 @@ python-on-whales = "0.78.0"
 steam = {git = "https://github.com/detiam/steam_websocket.git", branch = "master", extras=["client"]}
 
 [tool.poetry.group.dev.dependencies]
-bcrypt = "4.3.0"
+bcrypt = "5.0.0"
 furl = "2.1.4"
 pre-commit = "4.3.0"
 pytest = "8.4.2"
