@@ -49,14 +49,3 @@ Selector labels
 app.kubernetes.io/name: {{ include "rust.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "rust.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "rust.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
