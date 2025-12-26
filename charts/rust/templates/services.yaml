@@ -1,0 +1,34 @@
+{{- range $i, $instance := .Values.instances }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "rust.fullname" . }}-{{ $i }}
+  labels:
+    {{- include "rust.labels" . | nindent 4 }}
+  {{- with $instance.service.metadata.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ $instance.service.type }}
+  externalTrafficPolicy: {{ $instance.service.externalTrafficPolicy }}
+  ports:
+    - name: server-port
+      port: {{ $instance.serverPort }}
+      targetPort: server-port
+      protocol: UDP
+    - name: rcon-port
+      port: {{ $instance.rconPort }}
+      targetPort: rcon-port
+      protocol: TCP
+    - name: query-port
+      port: {{ $instance.serverQueryPort }}
+      targetPort: query-port
+      protocol: UDP
+    - name: app-port
+      port: {{ $instance.appPort }}
+      targetPort: app-port
+      protocol: TCP
+  selector:
+    statefulset.kubernetes.io/pod-name: {{ include "rust.fullname" . }}-{{ $i }}
+{{- end }}

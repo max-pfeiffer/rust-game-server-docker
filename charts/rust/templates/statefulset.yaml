@@ -69,6 +69,10 @@ spec:
                 secretKeyRef:
                   name: {{ ternary (include "rust.fullname" .) .Values.rustDedicatedServer.existingSecret (empty .Values.rustDedicatedServer.existingSecret) }}
                   key: rconPassword
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
           ports:
             - name: server-port
               containerPort: {{ .Values.rustDedicatedServer.serverPort }}
@@ -111,6 +115,8 @@ spec:
           volumeMounts:
             - name: server-identity
               mountPath: "/srv/rust/server/dedicated"
+            - name: config
+              mountPath: "/srv/rust/config"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -123,6 +129,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "rust.fullname" $ }}
   volumeClaimTemplates:
   - metadata:
       name: server-identity
