@@ -7,5 +7,7 @@ metadata:
 data:
   {{- range $i, $instance := .Values.instances }}
   {{ include "rust.fullname" . }}-{{ $i }}: |
-    {{- toYaml $instance | nindent 4}}
+    {{- range $key, $value := .$instance }}
+    "{{ $key }}={{ $value }}"
+    {{- end }}
   {{- end }}

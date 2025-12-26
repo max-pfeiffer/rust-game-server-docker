@@ -42,15 +42,15 @@ spec:
             - "+server.queryport"
             - "{{ .Values.rustDedicatedServer.serverQueryPort}}"
             - "+server.hostname"
-            - "{{ .Values.rustDedicatedServer.hostName }}"
+            - "$hostName"
             - "+server.maxplayers"
-            - "{{ .Values.rustDedicatedServer.maxPlayers }}"
+            - "$maxPlayers"
             - "+server.worldsize"
-            - "{{ .Values.rustDedicatedServer.worldSize }}"
+            - "$worldSize"
             - "+server.gamemode"
-            - "{{ .Values.rustDedicatedServer.gameMode }}"
+            - "$gameMode"
             - "+server.seed"
-            - "{{ .Values.rustDedicatedServer.seed }}"
+            - "$seed"
             - "+server.identity"
             - "dedicated"
             - "+rcon.ip"
@@ -60,15 +60,10 @@ spec:
             - "+rcon.password"
             - "$(RCON_PASSWORD)"
             - "+rcon.web"
-            - "{{ .Values.rustDedicatedServer.rconWeb }}"
+            - "$rconWeb"
             - "+app.port"
             - "{{ .Values.rustDedicatedServer.appPort }}"
           env:
-            - name: RCON_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ ternary (include "rust.fullname" .) .Values.rustDedicatedServer.existingSecret (empty .Values.rustDedicatedServer.existingSecret) }}
-                  key: rconPassword
             - name: POD_NAME
               valueFrom:
                 fieldRef:
@@ -117,6 +112,8 @@ spec:
               mountPath: "/srv/rust/server/dedicated"
             - name: config
               mountPath: "/srv/rust/config"
+            - name: secret
+              mountPath: "/srv/rust/secret"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -133,6 +130,9 @@ spec:
         - name: config
           configMap:
             name: {{ include "rust.fullname" $ }}
+        - name: secret
+          secret:
+            secretName: {{ include "rust.fullname" $ }}
   volumeClaimTemplates:
   - metadata:
       name: server-identity
