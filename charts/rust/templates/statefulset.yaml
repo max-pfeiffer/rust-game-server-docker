@@ -58,7 +58,7 @@ spec:
             - "+rcon.port"
             - "{{ .Values.rustDedicatedServer.rconPort }}"
             - "+rcon.password"
-            - "$(RCON_PASSWORD)"
+            - "$rconPassword"
             - "+rcon.web"
             - "$rconWeb"
             - "+app.port"
@@ -68,6 +68,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: CONFIG_FILE_PATH
+              value: "/srv/rust/config/$(POD_NAME)"
+            - name: SECRET_FILE_PATH
+              value: "/srv/rust/secret/$(POD_NAME)"
           ports:
             - name: server-port
               containerPort: {{ .Values.rustDedicatedServer.serverPort }}
