@@ -36,9 +36,9 @@ securityContext: {}
   # runAsUser: 1000
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
-service:
+headlessService:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: LoadBalancer
+  type: ClusterIP
   # See: https://kubernetes.io/docs/concepts/services-networking/service/#traffic-policies
   externalTrafficPolicy: Cluster
   metadata:
