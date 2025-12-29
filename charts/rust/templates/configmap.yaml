@@ -8,7 +8,7 @@ data:
   {{- range $i, $instance := .Values.instances }}
   {{ include "rust.fullname" $ }}-{{ $i }}: |
     {{- range $key, $value := $instance }}
-    {{- if not (has $key (list "rconPassword" "existingSecret" "service")) }}
+    {{- if not (has $key (list "rconPassword" "service")) }}
     {{ $key }}={{ $value }}
     {{- end }}
     {{- end }}

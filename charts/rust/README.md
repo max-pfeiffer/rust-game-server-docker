@@ -74,14 +74,25 @@ instances:
     rconWeb: "1"
     # Rcon Password
     rconPassword: "yourpassword"
-    # Name of the existing secret to use for the rconPassword.
-    # If this is set, rustDedicatedServer.rconPassword will be ignored.
-    # The existing secret needs to have stored Rust rconPassword under the key rconPassword.
-    existingSecret: ""
     # Pod specific service
     service:
       type: LoadBalancer
       externalTrafficPolicy: Cluster
       metadata:
         annotations: {}
+```
+If you want to create the Secret with the `rconPassword` not with the Helm installation, you can specify the name of
+an existing secret. This is a common approach when you work with the GitOps approach and create your Secrets for
+instance using the External Secrets Operator.
+```yaml
+rustDedicatedServer:
+  # Name of the existing secret to use for the rconPassword.
+  # If this is set, instances[*].rconPassword will be ignored.
+  # The existing secret needs to store the passwords for all instances in this pattern (see secret template):
+  # data:
+  #   rust-dedicated-server-0: |
+  #     rconPassword=yourpassword
+  #   rust-dedicated-server-1: |
+  #     rconPassword=yourpassword
+  existingSecret: "mysecret"  
 ```

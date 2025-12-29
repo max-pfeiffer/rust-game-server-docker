@@ -88,6 +88,15 @@ rustDedicatedServer:
   appPort: "28082"
   # Maximum number of players
   volumeStorageSize: "1Gi"
+  # Name of the existing secret to use for the rconPassword.
+  # If this is set, instances[*].rconPassword will be ignored.
+  # The existing secret needs to store the passwords for all instances in this pattern (see secret template):
+  # data:
+  #   rust-dedicated-server-0: |
+  #     rconPassword=yourpassword
+  #   rust-dedicated-server-1: |
+  #     rconPassword=yourpassword
+  existingSecret: ""
 
 # You can choose to run multiple instances of Rust dedicated servers here.
 # For a new instance add another entry to this list.
@@ -106,10 +115,6 @@ instances:
     rconWeb: "1"
     # Rcon Password
     rconPassword: "yourpassword"
-    # Name of the existing secret to use for the rconPassword.
-    # If this is set, rustDedicatedServer.rconPassword will be ignored.
-    # The existing secret needs to have stored Rust rconPassword under the key rconPassword.
-    existingSecret: ""
     # Pod specific service
     service:
       type: LoadBalancer
