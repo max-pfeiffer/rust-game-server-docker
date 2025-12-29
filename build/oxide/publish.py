@@ -1,6 +1,5 @@
 """Publish CLI."""
 
-from os import getenv
 from pathlib import Path
 
 import click
@@ -51,7 +50,6 @@ def main(
     :param registry:
     :return:
     """
-    github_ref_name: str = getenv("GITHUB_REF_NAME")
     context: Path = get_oxide_context()
 
     click.echo("Checking Oxide build ID for release branch...")
@@ -68,12 +66,6 @@ def main(
         tag = create_oxide_tag(current_oxide_build_id)
         image_reference_version: str = get_image_reference(registry, tag)
         image_reference_latest: str = get_image_reference(registry, "latest-oxide")
-        if github_ref_name:
-            cache_to: str = f"type=gha,mode=max,scope={github_ref_name}"
-            cache_from: str = f"type=gha,scope={github_ref_name}"
-        else:
-            cache_to = f"type=local,mode=max,dest=/tmp,scope={github_ref_name}"
-            cache_from = f"type=local,src=/tmp,scope={github_ref_name}"
 
         docker_client: DockerClient = DockerClient()
         builder: Builder = docker_client.buildx.create(
@@ -95,8 +87,6 @@ def main(
             tags=[image_reference_version, image_reference_latest],
             platforms=PLATFORMS,
             builder=builder,
-            cache_to=cache_to,
-            cache_from=cache_from,
             push=True,
         )
 
