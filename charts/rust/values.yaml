@@ -6,7 +6,7 @@
 image:
   repository: "pfeiffermax/rust-game-server"
   # This sets the pull policy for images.
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   # Please see Docker Hub for available tags: https://hub.docker.com/r/pfeiffermax/rust-game-server/tags
   tag: "latest"
@@ -40,7 +40,6 @@ headlessService:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   # See: https://kubernetes.io/docs/concepts/services-networking/service/#traffic-policies
-  externalTrafficPolicy: Cluster
   metadata:
     annotations: {}
 
@@ -78,6 +77,7 @@ livenessProbe:
   failureThreshold: 3
   successThreshold: 1
 
+# These settings are applied to all instances this StatefulSet is running.
 rustDedicatedServer:
   serverPort: "28015"
   # Rust Rcon port
@@ -89,6 +89,8 @@ rustDedicatedServer:
   # Maximum number of players
   volumeStorageSize: "1Gi"
 
+# You can choose to run multiple instances of Rust dedicated servers here.
+# For a new instance add another entry to this list.
 instances:
     # You can use just one single string without any spaces as this is specified as command line option.
   - hostName: "Vanilla-Rust-Server"

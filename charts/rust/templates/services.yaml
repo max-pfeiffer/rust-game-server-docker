@@ -31,4 +31,5 @@ spec:
       protocol: TCP
   selector:
     statefulset.kubernetes.io/pod-name: {{ include "rust.fullname" $ }}-{{ $i }}
+---
 {{- end }}

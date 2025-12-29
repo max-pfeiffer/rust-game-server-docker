@@ -1,12 +1,5 @@
 """Tests Docker image build."""
 
-from click.testing import CliRunner, Result
-from furl import furl
-from python_on_whales import DockerClient
-from requests import Response, get
-from requests.auth import HTTPBasicAuth
-from testcontainers.registry import DockerRegistryContainer
-
 from build.oxide.publish import main as oxide_main
 from build.publish import main
 from build.utils import (
@@ -15,6 +8,13 @@ from build.utils import (
     get_oxide_build_id,
     get_rust_build_id,
 )
+from click.testing import CliRunner, Result
+from furl import furl
+from python_on_whales import DockerClient
+from requests import Response, get
+from requests.auth import HTTPBasicAuth
+from testcontainers.registry import DockerRegistryContainer
+
 from tests.constants import REGISTRY_PASSWORD, REGISTRY_TOKEN, REGISTRY_USERNAME
 
 BASIC_AUTH: HTTPBasicAuth = HTTPBasicAuth(REGISTRY_USERNAME, REGISTRY_PASSWORD)

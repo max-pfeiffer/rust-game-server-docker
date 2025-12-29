@@ -1,5 +1,6 @@
 # Rust Helm Chart
-A [Helm chart](https://helm.sh/) for running a Rust dedicated server.
+A [Helm chart](https://helm.sh/) for running a Rust dedicated server. Since v2.0.0 this Helm chart supports running multiple
+server instances using one StatefulSet. 
 
 ## Installation
 If you want to run Rust on a bare metal Kubernetes cluster, I recommend reading
@@ -7,7 +8,12 @@ If you want to run Rust on a bare metal Kubernetes cluster, I recommend reading
 about that topic.
 
 ### Helm
-Currently, you can run a single server instance with each Helm installation. The installation is done as follows:
+You can run multiple server instance with each Helm installation. Please be aware that with a StatefulSet Kubernetes
+starts additional instances only after the first instance is in ready state. And Rust server startup is slow,
+so it might take a while until your Rust server fleet is up and running completely.
+It might better suit your needs to install multiple StatefulSets with separate Helm releases.
+
+The installation is done as follows:
 ```shell
 $ helm repo add rust https://max-pfeiffer.github.io/rust-game-server-docker
 $ helm install rust rust/rust --values your_values.yaml --namespace yournamespace 
@@ -48,35 +54,34 @@ startupProbe:
 ```
 
 ### Rust server config
-Tweak the Rust server config to your liking. 
+Tweak the Rust server config to your liking. You can add a list of server to `instances`. Please be aware that the
+configuration of resources and ports are shared by these instances.
 ```yaml
-rustDedicatedServer:
-  # You can use just one single string without any spaces as this is specified as command line option.
-  hostName: "Vanilla-Rust-Server"
-  # Rust main server port
-  serverPort: "28015"
-  # Rust Rcon port
-  rconPort: "28016"
-  # Rust server query port
-  serverQueryPort: "28017"
-  # Port for Rust+ app
-  appPort: "28082"
-  # Maximum number of players
-  maxPlayers: "20"
-  # World size
-  worldSize: "3000"
-  # Game mode. Options: vanilla, softcore, hardcore, weapontest, primitive
-  gameMode: "vanilla"  
-  # Map seed, always use a string here as Helm number conversion might produce incompatible strings.
-  seed: "666"
-  # Use 1 to switch on websocket rcon, 0 to switch off websocket rcon
-  rconWeb: "1"
-  # Rcon Password
-  rconPassword: "yourpassword"
-  # Volume size for server identity directory. Rust server stores it's config, saves and blueprints there
-  volumeStorageSize: "1Gi"
-  # Name of the existing secret to use for the rconPassword.
-  # If this is set, rustDedicatedServer.rconPassword will be ignored.
-  # The existing secret needs to have stored Rust rconPassword under the key rconPassword.
-  existingSecret: ""
+# You can choose to run multiple instances of Rust dedicated servers here.
+# For a new instance add another entry to this list.
+instances:
+    # You can use just one single string without any spaces as this is specified as command line option.
+  - hostName: "Vanilla-Rust-Server"
+    # Maximum number of players
+    maxPlayers: "20"
+    # World size
+    worldSize: "3000"
+    # Game mode. Options: vanilla, softcore, hardcore, weapontest, primitive
+    gameMode: "vanilla"
+    # Map seed, always use a string here as Helm number conversion might produce incompatible strings.
+    seed: "666"
+    # Use 1 to switch on websocket rcon, 0 to switch off websocket rcon
+    rconWeb: "1"
+    # Rcon Password
+    rconPassword: "yourpassword"
+    # Name of the existing secret to use for the rconPassword.
+    # If this is set, rustDedicatedServer.rconPassword will be ignored.
+    # The existing secret needs to have stored Rust rconPassword under the key rconPassword.
+    existingSecret: ""
+    # Pod specific service
+    service:
+      type: LoadBalancer
+      externalTrafficPolicy: Cluster
+      metadata:
+        annotations: {}
 ```

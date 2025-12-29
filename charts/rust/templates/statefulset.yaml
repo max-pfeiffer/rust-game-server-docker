@@ -6,7 +6,7 @@ metadata:
     {{- include "rust.labels" . | nindent 4 }}
 spec:
   serviceName: {{ include "rust.fullname" . }}
-  replicas: 1
+  replicas: {{ len .Values.instances }}
   selector:
     matchLabels:
       {{- include "rust.selectorLabels" . | nindent 6 }}

@@ -1,8 +1,10 @@
 #!/bin/bash
-# Check for Helm chart specific files containing environment variables
+# When this image is run using the Helm chart, the Helm chart creates files containing environment variables
+# with server configuration and the rcon password. These environment variables are exported to the current shell
+# if those files exist.
 if [[ -n "${CONFIG_FILE_PATH}" ]]; then
   if [[ -f "${CONFIG_FILE_PATH}" ]]; then
-    source "${CONFIG_FILE_PATH}"
+    set -a; source "${CONFIG_FILE_PATH}"; set +a
   else
     echo "SECRET_FILE_PATH is set, but file with environment variables at ${CONFIG_FILE_PATH} does not exit"
     exit 1
@@ -11,7 +13,7 @@ fi
 
 if [[ -n "${SECRET_FILE_PATH}" ]]; then
   if [[ -f "${SECRET_FILE_PATH}" ]]; then
-    source "${SECRET_FILE_PATH}"
+    set -a; source "${SECRET_FILE_PATH}"; set +a
   else
     echo "SECRET_FILE_PATH is set, but file with environment variables at ${SECRET_FILE_PATH} does not exit"
     exit 1
