@@ -31,4 +31,4 @@ done
 set -- "${EXPANDED_ARGS[@]}"
 
 # Run Rust dedicated server
-./RustDedicated -batchmode "$@"
+./RustDedicated -batchmode -nographics "$@"

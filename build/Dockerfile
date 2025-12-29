@@ -7,6 +7,7 @@ FROM debian:trixie-slim AS production-image
 # We need netcat for readiness and liveness probes
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
+    ca-certificates \
     netcat-traditional \
     gettext-base \
     && rm -rf /var/lib/apt/lists/*

@@ -17,6 +17,7 @@ FROM pfeiffermax/rust-game-server:latest AS production-image
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
     # Needed for Sign Artist Plugin: https://umod.org/plugins/sign-artist
-    libgdiplus
+    libgdiplus \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=mod-stage /tmp/oxide/RustDedicated_Data /srv/rust/RustDedicated_Data/
