@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim as mod-stage
+FROM debian:bookworm-slim AS mod-stage
 ARG OXIDE_ZIP_FILE_URL
 
 RUN apt-get update \
@@ -12,7 +12,7 @@ WORKDIR /tmp/oxide
 # Offical Oxide docs: https://docs.oxidemod.com/guides/owners/install-oxide
 RUN wget ${OXIDE_ZIP_FILE_URL} -O oxide.zip && unzip oxide.zip
 
-FROM pfeiffermax/rust-game-server:latest as production-image
+FROM pfeiffermax/rust-game-server:latest AS production-image
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
