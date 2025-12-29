@@ -3,7 +3,8 @@ FROM steamcmd/steamcmd:debian-trixie
 # We need netcat for readiness and liveness probes
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
-    netcat-traditional
+    netcat-traditional \
+    gettext-base
 
 WORKDIR /srv/rust
 
