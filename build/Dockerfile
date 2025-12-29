@@ -1,4 +1,4 @@
-FROM steamcmd/steamcmd:debian-bookworm
+FROM steamcmd/steamcmd:debian-trixie
 
 # We need netcat for readiness and liveness probes
 RUN apt-get update \

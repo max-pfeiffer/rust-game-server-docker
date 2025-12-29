@@ -1,14 +1,15 @@
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
   name: {{ include "rust.fullname" . }}
   labels:
     {{- include "rust.labels" . | nindent 4 }}
-type: Opaque
-stringData:
+data:
   {{- range $i, $instance := .Values.instances }}
-  {{- if not $instance.existingSecret }}
   {{ include "rust.fullname" $ }}-{{ $i }}: |
-    rconPassword={{ $instance.rconPassword }}
-  {{- end }}
+    {{- range $key, $value := $instance }}
+    {{- if not (has $key (list "rconPassword" "existingSecret" "service")) }}
+    {{ $key }}={{ $value }}
+    {{- end }}
+    {{- end }}
   {{- end }}

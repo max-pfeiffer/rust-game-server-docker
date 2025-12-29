@@ -6,7 +6,7 @@ metadata:
     {{- include "rust.labels" . | nindent 4 }}
 spec:
   serviceName: {{ include "rust.fullname" . }}
-  replicas: 1
+  replicas: {{ len .Values.instances }}
   selector:
     matchLabels:
       {{- include "rust.selectorLabels" . | nindent 6 }}
@@ -42,15 +42,15 @@ spec:
             - "+server.queryport"
             - "{{ .Values.rustDedicatedServer.serverQueryPort}}"
             - "+server.hostname"
-            - "{{ .Values.rustDedicatedServer.hostName }}"
+            - "$hostName"
             - "+server.maxplayers"
-            - "{{ .Values.rustDedicatedServer.maxPlayers }}"
+            - "$maxPlayers"
             - "+server.worldsize"
-            - "{{ .Values.rustDedicatedServer.worldSize }}"
+            - "$worldSize"
             - "+server.gamemode"
-            - "{{ .Values.rustDedicatedServer.gameMode }}"
+            - "$gameMode"
             - "+server.seed"
-            - "{{ .Values.rustDedicatedServer.seed }}"
+            - "$seed"
             - "+server.identity"
             - "dedicated"
             - "+rcon.ip"
@@ -58,17 +58,20 @@ spec:
             - "+rcon.port"
             - "{{ .Values.rustDedicatedServer.rconPort }}"
             - "+rcon.password"
-            - "$(RCON_PASSWORD)"
+            - "$rconPassword"
             - "+rcon.web"
-            - "{{ .Values.rustDedicatedServer.rconWeb }}"
+            - "$rconWeb"
             - "+app.port"
             - "{{ .Values.rustDedicatedServer.appPort }}"
           env:
-            - name: RCON_PASSWORD
+            - name: POD_NAME
               valueFrom:
-                secretKeyRef:
-                  name: {{ ternary (include "rust.fullname" .) .Values.rustDedicatedServer.existingSecret (empty .Values.rustDedicatedServer.existingSecret) }}
-                  key: rconPassword
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: CONFIG_FILE_PATH
+              value: "/srv/rust/config/$(POD_NAME)"
+            - name: SECRET_FILE_PATH
+              value: "/srv/rust/secret/$(POD_NAME)"
           ports:
             - name: server-port
               containerPort: {{ .Values.rustDedicatedServer.serverPort }}
@@ -111,6 +114,10 @@ spec:
           volumeMounts:
             - name: server-identity
               mountPath: "/srv/rust/server/dedicated"
+            - name: config
+              mountPath: "/srv/rust/config"
+            - name: secret
+              mountPath: "/srv/rust/secret"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -123,6 +130,13 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "rust.fullname" $ }}
+        - name: secret
+          secret:
+            secretName: {{ include "rust.fullname" $ }}
   volumeClaimTemplates:
   - metadata:
       name: server-identity

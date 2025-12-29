@@ -4,13 +4,13 @@ metadata:
   name: {{ include "rust.fullname" . }}
   labels:
     {{- include "rust.labels" . | nindent 4 }}
-  {{- with .Values.service.metadata.annotations }}
+  {{- with .Values.headlessService.metadata.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  type: {{ .Values.service.type }}
-  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
+  type: {{ .Values.headlessService.type }}
+  clusterIP: None
   ports:
     - name: server-port
       port: {{ .Values.rustDedicatedServer.serverPort }}
