@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rust-game-server-docker"
-version = "1.3.0"
+version = "1.4.0"
 description = "Docker container providing a Rust dedicated game server"
 authors = ["Max Pfeiffer <max@maxpfeiffer.ch>"]
 readme = "README.md"
@@ -16,7 +16,7 @@ steam = {git = "https://github.com/detiam/steam_websocket.git", branch = "master
 bcrypt = "5.0.0"
 furl = "2.1.4"
 pre-commit = "4.5.1"
-pytest = "8.4.2"
+pytest = "9.0.2"
 pytest-cov = "7.0.0"
 testcontainers = "4.13.3"
 
