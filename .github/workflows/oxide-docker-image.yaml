@@ -17,6 +17,16 @@ jobs:
   publish-docker-image:
     runs-on: ubuntu-24.04
     steps:
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: false
+          docker-images: true
+          swap-storage: true
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Set up Python environment
