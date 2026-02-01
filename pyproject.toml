@@ -18,7 +18,7 @@ furl = "2.1.4"
 pre-commit = "4.5.1"
 pytest = "9.0.2"
 pytest-cov = "7.0.0"
-testcontainers = "4.13.3"
+testcontainers = "4.14.1"
 
 [tool.ruff]
 src = ["build", "tests"]
