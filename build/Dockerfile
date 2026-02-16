@@ -18,6 +18,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /srv/rust
+RUN chown rust:rust /srv/rust
 
 COPY --from=install-stage --chown=rust:rust /srv/rust /srv/rust
 
