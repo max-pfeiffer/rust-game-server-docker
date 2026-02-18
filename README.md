@@ -28,6 +28,20 @@ Kudus to:
 
 **GitHub Repository:** https://github.com/max-pfeiffer/rust-game-server-docker
 
+## IMPORTANT CHANGES SINCE V2.0.0 (18.2.2026)
+Since image version V2.0.0 the application is run with an unprivileged user and not with root user anymore. This was
+done to improve the security of this image.
+If you were persisting server identity with a Volume and start the Rust dedicated server using the new image (like
+in the docker compose examples), you will encounter problems starting your server. This happens because root user still
+owns the files in that Volume and the new unprivileged user doesn't have permissions to access these files.
+
+If you are using Docker please adjust the file ownership with this command:
+```shell
+docker exec -it -u root rust-server chown -R rust:rust /srv/rust
+```
+Please restart the Docker container afterwards. Your server should start up just fine.
+`rust-server` is the name of your container.
+
 ## Oxide
 Since v1.1.0 I provide an [Oxide](https://umod.org/games/rust) variant of this image. The automation checks for
 [a new Oxide release on GitHub](https://github.com/OxideMod/Oxide.Rust/releases) every night and builds a new image

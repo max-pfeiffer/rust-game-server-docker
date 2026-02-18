@@ -28,13 +28,15 @@ services:
       - "supersecret"
       - "+rcon.web"
       - "1"
+      - "+server.identity"
+      - "testserver"
     ports:
       - "28015:28015/udp"
       - "28016:28016/tcp"
     volumes:
       - type: volume
         source: server_identity
-        target: "/srv/rust/server/${SERVER_NAME}"
+        target: "/srv/rust/server/testserver"
 
   rust-web-rcon:
     image: "pfeiffermax/rust-web-rcon:latest"
@@ -46,4 +48,4 @@ services:
 
 volumes:
   server_identity:
-    name: "rust-server-identity-${SERVER_NAME}"
+    name: "rust-server-identity-testserver"
