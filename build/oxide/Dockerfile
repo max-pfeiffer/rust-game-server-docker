@@ -20,4 +20,4 @@ RUN apt-get update \
     libgdiplus \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=mod-stage /tmp/oxide/RustDedicated_Data /srv/rust/RustDedicated_Data/
+COPY --from=mod-stage --chown=rust:rust /tmp/oxide/RustDedicated_Data /srv/rust/RustDedicated_Data/
