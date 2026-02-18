@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rust-game-server-docker"
-version = "1.4.0"
+version = "2.0.0"
 description = "Docker container providing a Rust dedicated game server"
 authors = ["Max Pfeiffer <max@maxpfeiffer.ch>"]
 readme = "README.md"
