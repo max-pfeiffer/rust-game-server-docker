@@ -27,6 +27,27 @@ monitor the [Rust Docker Image](https://hub.docker.com/r/pfeiffermax/rust-game-s
 installation automatically when a new image is released.
 
 ## Configuration options
+### Security Context
+As the `pfeiffermax/rust-game-server` image runs the Rust server with an unprivileged user since V2.0.0, secure default
+values for `podSecurityContext` and `securityContext` were added.
+```yaml
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+  fsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+  seccompProfile:
+    type: RuntimeDefault
+```
+If that doesn't suit your needs, just override these defaults.
+
 ### Resources
 Make sure to get the resource specs right. You will need at least two CPU cores and 8GB of RAM. There is a [RAM
 estimation tool](https://developer.valvesoftware.com/wiki/Rust_Dedicated_Server#System_Requirements) that you could use.
