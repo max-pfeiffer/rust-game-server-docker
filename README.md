@@ -28,7 +28,7 @@ Kudus to:
 
 **GitHub Repository:** https://github.com/max-pfeiffer/rust-game-server-docker
 
-## IMPORTANT CHANGES SINCE V2.0.0 (18.2.2026)
+## IMPORTANT CHANGE SINCE V2.0.0 (build-21954779, 18.2.2026)
 Since image version V2.0.0 the application is run with an unprivileged user and not with root user anymore. This was
 done to improve the security of this image.
 If you were persisting server identity with a Volume and start the Rust dedicated server using the new image (like
@@ -41,6 +41,9 @@ docker exec -it -u root rust-server chown -R rust:rust /srv/rust
 ```
 Please restart the Docker container afterwards. Your server should start up just fine.
 `rust-server` is the name of your container.
+
+If you are using the Helm chart for running the Rust dedicated server on Kubernetes, just upgrade your Helm release
+using chart version v2.2.0 or newer. This will fix file permissions in your Volume by applying the correct `fsGroup`.
 
 ## Oxide
 Since v1.1.0 I provide an [Oxide](https://umod.org/games/rust) variant of this image. The automation checks for
