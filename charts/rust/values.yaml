@@ -124,4 +124,5 @@ instances:
       type: LoadBalancer
       externalTrafficPolicy: Cluster
       metadata:
+        labels: {}
         annotations: {}

@@ -43,7 +43,8 @@ Please restart the Docker container afterwards. Your server should start up just
 `rust-server` is the name of your container.
 
 If you are using the Helm chart for running the Rust dedicated server on Kubernetes, just upgrade your Helm release
-using chart version v2.2.0 or newer. This will fix file permissions in your Volume by applying the correct `fsGroup`.
+using chart version v2.2.0 or newer. This will fix file permissions in your Volume by applying the correct `fsGroup`
+for the Pod security context.
 
 ## Oxide
 Since v1.1.0 I provide an [Oxide](https://umod.org/games/rust) variant of this image. The automation checks for
