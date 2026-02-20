@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim AS mod-stage
+FROM debian:trixie-slim AS mod-stage
 ARG OXIDE_ZIP_FILE_URL
 
 RUN apt-get update \
