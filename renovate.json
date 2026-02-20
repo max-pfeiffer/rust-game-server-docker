@@ -1,0 +1,24 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "schedule": ["* * * * 4"],
+  "enabledManagers": ["poetry"],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ],
+  "automergeType": "branch",
+  "platformAutomerge": false,
+  "rebaseWhen": "behind-base-branch",
+  "prCreation": "immediate",
+  "dependencyDashboard": false,
+  "dependencyDashboardApproval": false
+}
