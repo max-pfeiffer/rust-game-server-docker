@@ -18,12 +18,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /srv/rust
-RUN chown rust:rust /srv/rust
 
-COPY --from=install-stage --chown=rust:rust /srv/rust /srv/rust
+COPY --from=install-stage /srv/rust /srv/rust
 
-COPY --chown=rust:rust runds.sh /srv/rust/runds.sh
-RUN chmod +x /srv/rust/runds.sh
+COPY runds.sh /srv/rust/runds.sh
+
+RUN chmod +x /srv/rust/runds.sh && mkdir /srv/rust/server && chown -R rust:rust /srv/rust
 
 # server.port, rcon.port udp, rcon.port tcp, queryport, app.port
 EXPOSE 28015/udp 28016/udp 28016/tcp 28017/udp 28082/tcp
