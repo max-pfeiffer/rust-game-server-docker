@@ -6,7 +6,7 @@ FROM debian:trixie-slim AS production-image
 
 # Principle of least privilege: create a new user for running the application
 RUN groupadd -g 10001 rust && \
-    useradd -r -u 10001 -g rust rust
+    useradd -r -u 10001 -g rust --create-home rust
 
 
 # We need netcat for readiness and liveness probes

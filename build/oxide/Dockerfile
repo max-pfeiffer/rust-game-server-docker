@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim AS mod-stage
+FROM debian:trixie-slim AS mod-stage
 ARG OXIDE_ZIP_FILE_URL
 
 RUN apt-get update \
@@ -14,6 +14,8 @@ RUN wget ${OXIDE_ZIP_FILE_URL} -O oxide.zip && unzip oxide.zip
 
 FROM pfeiffermax/rust-game-server:latest AS production-image
 
+USER 0
+
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
     # Needed for Sign Artist Plugin: https://umod.org/plugins/sign-artist
@@ -21,3 +23,5 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=mod-stage --chown=rust:rust /tmp/oxide/RustDedicated_Data /srv/rust/RustDedicated_Data/
+
+USER 10001

@@ -3,8 +3,9 @@
 [![codecov](https://codecov.io/gh/max-pfeiffer/rust-game-server-docker/graph/badge.svg?token=RfzYdxhvCd)](https://codecov.io/gh/max-pfeiffer/rust-game-server-docker)
 [![Code Quality](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/code-quality.yaml/badge.svg)](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/code-quality.yaml)
 [![Test Image Build](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/test-image-build.yaml/badge.svg)](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/test-image-build.yaml)
-![publish workflow](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/publish.yaml/badge.svg)
-![helm-release workflow](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/helm-release.yaml/badge.svg)
+[![Publish Docker Image](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/publish.yaml/badge.svg)](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/publish.yaml)
+[![Lint Helm Chart](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/helm-lint.yaml/badge.svg)](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/helm-lint.yaml)
+[![Release Helm Charts](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/helm-release.yaml/badge.svg)](https://github.com/max-pfeiffer/rust-game-server-docker/actions/workflows/helm-release.yaml)
 ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/pfeiffermax/rust-game-server?sort=semver)
 ![Docker Pulls](https://img.shields.io/docker/pulls/pfeiffermax/rust-game-server)
 
