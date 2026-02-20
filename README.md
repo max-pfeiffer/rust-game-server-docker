@@ -32,16 +32,26 @@ Kudus to:
 ## IMPORTANT CHANGE SINCE V2.0.0 (build-21954779, 18.2.2026)
 Since image version V2.0.0 the application is run with an unprivileged user and not with root user anymore. This was
 done to improve the security of this image.
-If you were persisting server identity with a Volume and start the Rust dedicated server using the new image (like
-in the docker compose examples), you will encounter problems starting your server. This happens because root user still
-owns the files in that Volume and the new unprivileged user doesn't have permissions to access these files.
+If you were persisting server identity with a [Volume](https://docs.docker.com/storage/volumes/) and start the Rust
+dedicated server using the new image (like in the [docker compose examples](examples)), you will encounter problems 
+starting your server.
+This happens because root user still owns the files in that Volume and the new unprivileged user doesn't have
+permissions to access these files.
 
-If you are using Docker please adjust the file ownership with this command:
+If you are using docker compose you need to update your docker-compose.yaml with the
+[`init-container` from the example](examples/docker-compose/compose.yaml).
+This init container will adjust the file permissions in your [Volume](https://docs.docker.com/storage/volumes/).
+Then stop and remove the containers and recreate and start them:
+```shell
+docker compose down
+docker compose up -d
+```
+
+If you are using Docker please adjust the file ownership in your `rust-server` container manually with this command:
 ```shell
 docker exec -it -u root rust-server chown -R rust:rust /srv/rust
 ```
 Please restart the Docker container afterwards. Your server should start up just fine.
-`rust-server` is the name of your container.
 
 If you are using the Helm chart for running the Rust dedicated server on Kubernetes, just upgrade your Helm release
 using chart version v2.2.0 or newer. This will fix file permissions in your Volume by applying the correct `fsGroup`
@@ -71,7 +81,7 @@ You can append all [server configuration options](https://www.corrosionhour.com/
 when running `RustDedicated` binary. Use the regular syntax like `+server.ip 0.0.0.0` or `-logfile`.
 
 As the Rust server is running in the Docker container as a stateless application, you want to have all stateful server
-data (map, config, blueprints, etc.) stored in a [Docker volume](https://docs.docker.com/storage/volumes/)
+data (map, config, blueprints, etc.) stored in a [Docker Volume](https://docs.docker.com/storage/volumes/)
 which is persisted outside of the container. This can be configured with `+server.identity`: you can specify the
 directory where this data is stored. You need to make sure that this directory is mounted on
 a [Docker Volume](https://docs.docker.com/storage/volumes/).
