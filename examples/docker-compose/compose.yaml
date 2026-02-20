@@ -1,10 +1,25 @@
 name: rust
 
 services:
+  init-container:
+    image: alpine:latest
+    container_name: "init-container"
+    user: root
+    command:
+      - "chown"
+      - "-R"
+      - "10001:10001"
+      - "/srv/rust/server"
+    volumes:
+      - type: volume
+        source: server_identity
+        target: "/srv/rust/server/testserver"
   rust-server:
+    depends_on:
+      - init-container
     image: "pfeiffermax/rust-game-server:latest"
-    pull_policy: always
     container_name: "rust-server"
+    pull_policy: always
     command:
       - "+server.ip"
       - "0.0.0.0"

@@ -1,10 +1,25 @@
 name: rust
 
 services:
+  init-container:
+    image: alpine:latest
+    container_name: "init-container"
+    user: root
+    command:
+      - "chown"
+      - "-R"
+      - "10001:10001"
+      - "/srv/rust/server"
+    volumes:
+      - type: volume
+        source: server_identity
+        target: "/srv/rust/server/${SERVER_NAME}"
   rust-server:
+    depends_on:
+      - init-container
     image: "pfeiffermax/rust-game-server:latest"
-    pull_policy: always
     container_name: "rust-server"
+    pull_policy: always
     cpus: 2
     mem_limit: 16gb
     command:
@@ -29,7 +44,7 @@ services:
       - "+rcon.port"
       - "28016"
       - "+rcon.password"
-      - ${RCON_PASSWORD}
+      - ${PASSWORD}
       - "+rcon.web"
       - "1"
       - "-logfile"
@@ -45,7 +60,6 @@ services:
         source: /var/log/docker-compose/rust
         target: /var/log
     env_file: .env
-
   rust-web-rcon:
     image: "pfeiffermax/rust-web-rcon:latest"
     container_name: "rust-web-rcon"
