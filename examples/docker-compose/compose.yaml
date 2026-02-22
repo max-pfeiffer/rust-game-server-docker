@@ -2,14 +2,13 @@ name: rust
 
 services:
   init-container:
-    image: alpine:latest
+    image: alpine:3.23
     container_name: "init-container"
     user: root
     command:
-      - "chown"
-      - "-R"
-      - "10001:10001"
-      - "/srv/rust/server"
+      - "/bin/sh"
+      - "-c"
+      - "chown -R 10001:10001 /srv/rust/server"
     volumes:
       - type: volume
         source: server_identity
