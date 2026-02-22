@@ -28,6 +28,16 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: adjust-volume-file-permissions
+          image: alpine:3.23
+          command:
+            - "/bin/sh"
+            - "-c"
+            - "chown -R 10001:10001 /srv/rust/server"
+          volumeMounts:
+            - name: server-identity
+              mountPath: "/srv/rust/server/dedicated"
       containers:
         - name: {{ .Chart.Name }}
           securityContext:

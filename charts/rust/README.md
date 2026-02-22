@@ -32,14 +32,12 @@ As the `pfeiffermax/rust-game-server` image runs the Rust server with an unprivi
 values for `podSecurityContext` and `securityContext` were added.
 ```yaml
 podSecurityContext:
+  fsGroup: 10001
+
+securityContext:
   runAsNonRoot: true
   runAsUser: 10001
   runAsGroup: 10001
-  fsGroup: 10001
-  seccompProfile:
-    type: RuntimeDefault
-
-securityContext:
   allowPrivilegeEscalation: false
   capabilities:
     drop: ["ALL"]
