@@ -41,21 +41,22 @@ permissions to access these files.
 If you are using docker compose you need to update your docker-compose.yaml with the
 [`init-container` from the example](examples/docker-compose/compose.yaml).
 This init container will adjust the file permissions in your [Volume](https://docs.docker.com/storage/volumes/).
-Then stop and remove the containers and recreate and start them:
+First stop and remove the containers then recreate and start them:
 ```shell
 docker compose down
 docker compose up -d
 ```
 
-If you are using Docker please adjust the file ownership in your `rust-server` container manually with this command:
+If you are using Docker and a [Volume](https://docs.docker.com/storage/volumes/), please adjust the file ownership
+in your `rust-server` container manually with this command:
 ```shell
 docker exec -it -u root rust-server chown -R rust:rust /srv/rust
 ```
 Please restart the Docker container afterwards. Your server should start up just fine.
 
 If you are using the Helm chart for running the Rust dedicated server on Kubernetes, just upgrade your Helm release
-using chart version v2.2.0 or newer. This will fix file permissions in your Volume by applying the correct `fsGroup`
-for the Pod security context.
+using chart version v2.4.0 or newer. This version contains an init container which adjusts the Volumes file system
+permissions and sets the correct `fsGroup` for the Pod security context.
 
 ## Oxide
 Since v1.1.0 I provide an [Oxide](https://umod.org/games/rust) variant of this image. The automation checks for
