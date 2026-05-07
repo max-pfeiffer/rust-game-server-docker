@@ -139,8 +139,8 @@ If you would like to run the Rust server in your [Kubernetes](https://kubernetes
 There is also [documentation available](charts/rust/README.md) for that Helm chart.
 
 If you want to run your Rust server on bare metal Kubernetes, check out
-[my blog article](https://max-pfeiffer.github.io/blog/hosting-game-servers-on-bare-metal-kubernetes-with-kube-vip.html)
-on how to do that using [kube-vip](https://kube-vip.io/).
+[my blog article](https://max-pfeiffer.github.io/hosting-game-servers-on-bare-metal-kubernetes-with-cilium-as-cni.html)
+on how to do that using [Cilium](https://cilium.io/).
 
 ## Additional Information Sources
 * [SteamDB](https://steamdb.info/app/258550/info/)
@@ -150,3 +150,4 @@ on how to do that using [kube-vip](https://kube-vip.io/).
 
 ## Other Game Server Projects
 * [Valheim dedicated server](https://github.com/max-pfeiffer/valheim-dedicated-server-docker-helm)
+* [Windrose dedicated server](https://github.com/max-pfeiffer/windrose-dedicated-server-docker-helm)
