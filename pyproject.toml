@@ -17,7 +17,7 @@ bcrypt = "5.0.0"
 furl = "2.1.4"
 pre-commit = "4.6.0"
 pytest = "9.0.3"
-pytest-cov = "7.0.0"
+pytest-cov = "7.1.0"
 testcontainers = "4.14.2"
 
 [tool.ruff]
