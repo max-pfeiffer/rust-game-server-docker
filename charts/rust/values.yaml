@@ -90,6 +90,12 @@ rustDedicatedServer:
   appPort: "28082"
   # Maximum number of players
   volumeStorageSize: "1Gi"
+  # StorageClass for the server-identity PersistentVolumeClaim.
+  # Leave empty ("") to use the cluster's default StorageClass.
+  # Set to a specific name (e.g. "standard" or "fast-ssd") to request that StorageClass explicitly.
+  # When empty, the storageClassName field is omitted entirely from the VolumeClaimTemplate,
+  # which lets Kubernetes fall back to the cluster default.
+  storageClassName: ""
   # Name of the existing secret to use for the rconPassword.
   # If this is set, instances[*].rconPassword will be ignored.
   # The existing secret needs to store the passwords for all instances in this pattern (see secret template):
