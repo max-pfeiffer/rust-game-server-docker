@@ -153,6 +153,9 @@ spec:
     spec:
       accessModes:
         - "ReadWriteOnce"
+      {{- if .Values.rustDedicatedServer.storageClassName }}
+      storageClassName: {{ .Values.rustDedicatedServer.storageClassName }}
+      {{- end }}
       resources:
         requests:
           storage: {{ .Values.rustDedicatedServer.volumeStorageSize }}
