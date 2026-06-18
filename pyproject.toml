@@ -16,7 +16,7 @@ steam = {git = "https://github.com/detiam/steam_websocket.git", branch = "master
 bcrypt = "5.0.0"
 furl = "2.1.4"
 pre-commit = "4.6.0"
-pytest = "9.0.3"
+pytest = "9.1.0"
 pytest-cov = "7.1.0"
 testcontainers = "4.14.2"
 
