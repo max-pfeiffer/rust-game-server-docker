@@ -1,0 +1,27 @@
+image:
+  pullPolicy: Always
+resources:
+  limits:
+    cpu: 3
+    memory: 11Gi
+  requests:
+    cpu: 2
+    memory: 10Gi
+startupProbe:
+  periodSeconds: 10
+  failureThreshold: 500
+instances:
+  - hostName: "test"
+    maxPlayers: "5"
+    worldSize: "500"
+    seed: "375784296"
+    rconWeb: "1"
+    rconPassword: supersecret
+    service:
+      type: LoadBalancer
+      externalTrafficPolicy: Cluster
+      metadata:
+        labels:
+          lb-ip-pool: bar
+        annotations:
+          "lbipam.cilium.io/ips": "192.168.20.85"
