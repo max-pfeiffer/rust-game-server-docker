@@ -3,10 +3,12 @@ name: Test Image Build
 on:
   pull_request:
     paths:
-      - .github/**
+      - .github/workflows/test-image-build.yaml
+      - .github/actions/setup-environment/**
       - build/**
       - tests/**
       - poetry.lock
+      - pyproject.toml
 
 jobs:
   test-image-build:
