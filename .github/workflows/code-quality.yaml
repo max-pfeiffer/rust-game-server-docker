@@ -6,7 +6,7 @@ on:
       - .github/**
       - build/**
       - tests/**
-      - poetry.lock
+      - uv.lock
 
 jobs:
   code-quality:
@@ -18,7 +18,7 @@ jobs:
         uses: ./.github/actions/setup-environment
       - name: Install dependencies
         run: |
-          poetry install --with dev --no-interaction --no-root
+          uv sync --group dev
       - name: Run ruff
         run: |
-          poetry run pre-commit run -a 
+          uv run pre-commit run -a

@@ -7,8 +7,8 @@ on:
       - .github/actions/setup-environment/**
       - build/**
       - tests/**
-      - poetry.lock
       - pyproject.toml
+      - uv.lock
 
 jobs:
   test-image-build:
@@ -30,10 +30,10 @@ jobs:
         uses: ./.github/actions/setup-environment
       - name: Install dependencies
         run: |
-          poetry install --with dev --no-interaction --no-root
+          uv sync --group dev
       - name: Run tests with pytest
         run: |
-          poetry run pytest --cov build --cov-report=xml
+          uv run pytest --cov build --cov-report=xml
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:

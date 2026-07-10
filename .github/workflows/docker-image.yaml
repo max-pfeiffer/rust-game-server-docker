@@ -33,11 +33,11 @@ jobs:
         uses: ./.github/actions/setup-environment
       - name: Install dependencies
         run: |
-          poetry install --without dev --no-interaction --no-root
+          uv sync --no-dev
       - name: Build and publish Images to Docker Hub
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
           PUBLISH_MANUALLY: ${{ inputs.PUBLISH_MANUALLY }}
-        run: |          
-          poetry run python -m build.publish
+        run: |
+          uv run python -m build.publish
