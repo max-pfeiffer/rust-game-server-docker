@@ -1,8 +1,8 @@
-FROM steamcmd/steamcmd:debian-trixie AS install-stage
+FROM docker.io/steamcmd/steamcmd:debian-trixie AS install-stage
 
 RUN steamcmd +force_install_dir /srv/rust +login anonymous +app_update 258550 validate +quit
 
-FROM debian:trixie-slim AS production-image
+FROM docker.io/library/debian:trixie-slim AS production-image
 
 # Principle of least privilege: create a new user for running the application
 RUN groupadd -g 10001 rust && \

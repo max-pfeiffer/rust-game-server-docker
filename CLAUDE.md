@@ -8,8 +8,9 @@ Despite the name, this is **not** a Rust application. It is Python build automat
 multi-stage Dockerfile that produces and publishes a [Rust dedicated game server](https://rust.facepunch.com/)
 Docker image (`pfeiffermax/rust-game-server`), together with a Helm chart for running it on Kubernetes.
 
-The Python code's only job is to decide *whether* a new image is needed and to drive `docker buildx`
-to build and push it. There is no long-running service here.
+The Python code's only job is to decide *whether* a new image is needed and to drive `podman`
+(via the [python-on-whales](https://gabrieldemarmiesse.github.io/python-on-whales/) client) to
+build and push it. There is no long-running service here.
 
 ## Common commands
 
@@ -36,9 +37,14 @@ PUBLISH_MANUALLY=1 uv run python -m build.oxide.publish   # Oxide variant
 The `steam[client]` dependency comes from a git fork pinned in `[tool.uv.sources]`, so resolving
 the lockfile requires network access to GitHub.
 
-**The tests require a running Docker daemon.** They use `testcontainers` to stand up a throwaway
-registry on port 5000 and actually build + push the image into it, so they are slow and download
-the full Rust server via steamcmd. Ruff is scoped to `build/` and `tests/` only (`charts/` and
+**The tests require Podman** (no Docker daemon). `conftest.py` runs a throwaway `registry:2`
+container via Podman on port 5000 and the publish CLIs `podman push` the built image into it, so
+mark `localhost:5000` insecure in `registries.conf.d` (HTTP-only). The build targets `linux/amd64`
+and the install stage runs steamcmd, a 32-bit x86 binary that **cannot be emulated on arm64** — so
+on an Apple-silicon machine the fixtures resolve a Podman *system connection* to an amd64 host
+(export `PODMAN_CONNECTION`, or add an amd64 connection with `podman system connection add`), and
+`build/utils.py:get_podman_client` routes every `podman` call through it. The tests are slow and
+download the full Rust server via steamcmd. Ruff is scoped to `build/` and `tests/` only (`charts/` and
 `examples/` are excluded).
 
 ## Architecture
@@ -50,9 +56,8 @@ Two nearly-parallel [Click](https://click.palletsprojects.com/) CLIs share helpe
 - `build/publish.py` — the base image. Queries the current Rust server **build ID** from Steam
   (`get_rust_build_id`, anonymous Steam client on app `258550`), and unless `--publish-manually`
   is set, skips the build entirely if a matching tag already exists on Docker Hub (`tag_exists`).
-  Otherwise it creates a `docker-container` buildx builder, logs in, builds the `production-image`
-  target for `PLATFORMS`, pushes both the versioned tag (`build-<id>`) and `latest`, then tears the
-  builder down.
+  Otherwise it logs in, runs `podman build` on the `production-image` target (`legacy_build`), and
+  `podman push`es both the versioned tag (`build-<id>`) and `latest`.
 - `build/oxide/publish.py` — the [Oxide](https://umod.org/games/rust) variant. Same flow keyed on
   the latest Oxide GitHub release (`get_oxide_build_id`), passing the release zip URL as the
   `OXIDE_ZIP_FILE_URL` build arg and pushing `oxide-build-<id>` + `latest-oxide`.

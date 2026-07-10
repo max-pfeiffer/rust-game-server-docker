@@ -18,7 +18,6 @@ dev = [
     "pre-commit==4.6.0",
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
-    "testcontainers==4.14.2",
 ]
 
 [tool.uv]

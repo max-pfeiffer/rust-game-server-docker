@@ -1,4 +1,4 @@
-FROM debian:trixie-slim AS mod-stage
+FROM docker.io/library/debian:trixie-slim AS mod-stage
 ARG OXIDE_ZIP_FILE_URL
 
 RUN apt-get update \
@@ -12,7 +12,7 @@ WORKDIR /tmp/oxide
 # Offical Oxide docs: https://docs.oxidemod.com/guides/owners/install-oxide
 RUN wget ${OXIDE_ZIP_FILE_URL} -O oxide.zip && unzip oxide.zip
 
-FROM pfeiffermax/rust-game-server:latest AS production-image
+FROM docker.io/pfeiffermax/rust-game-server:latest AS production-image
 
 USER 0
 
