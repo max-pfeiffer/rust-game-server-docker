@@ -21,42 +21,13 @@ Therefore, an automation checks the [Rust release branch](https://steamdb.info/a
 night. If a new release was published by [Facepunch](https://facepunch.com/), a new Docker image will be built with this
 new version. Just use the `latest` tag and you will always have an up-to-date Docker image.
 
-Kudus to:
+Kudos to:
 * [@jonakoudijs](https://github.com/jonakoudijs) for providing the [Steamcmd Docker image](https://github.com/steamcmd/docker) which is used here
 * [@detiam](https://github.com/detiam) for maintaining a working fork for the [Steam websocket client](https://github.com/detiam/steam_websocket) 
 
 **Docker Hub:** https://hub.docker.com/r/pfeiffermax/rust-game-server
 
 **GitHub Repository:** https://github.com/max-pfeiffer/rust-game-server-docker
-
-## IMPORTANT CHANGE SINCE V2.0.0 (build-21954779, 18.2.2026)
-Since image version V2.0.0 the application is run with an unprivileged user and not with root user anymore. This was
-done to improve the security of this image.
-If you were persisting server identity with a [Volume](https://docs.docker.com/storage/volumes/) and start the Rust
-dedicated server using the new image (like in the [docker compose examples](examples)), you will encounter problems 
-starting your server.
-This happens because root user still owns the files in that Volume and the new unprivileged user doesn't have
-permissions to access these files.
-
-If you are using docker compose you need to update your docker-compose.yaml with the
-[`init-container` from the example](examples/docker-compose/compose.yaml).
-This init container will adjust the file permissions in your [Volume](https://docs.docker.com/storage/volumes/).
-First stop and remove the containers then recreate and start them:
-```shell
-docker compose down
-docker compose up -d
-```
-
-If you are using Docker and a [Volume](https://docs.docker.com/storage/volumes/), please adjust the file ownership
-in your `rust-server` container manually with this command:
-```shell
-docker exec -it -u root rust-server chown -R rust:rust /srv/rust
-```
-Please restart the Docker container afterwards. Your server should start up just fine.
-
-If you are using the Helm chart for running the Rust dedicated server on Kubernetes, just upgrade your Helm release
-using chart version v2.4.0 or newer. This version contains an init container which adjusts the Volumes file system
-permissions and sets the correct `fsGroup` for the Pod security context.
 
 ## Oxide
 Since v1.1.0 I provide an [Oxide](https://umod.org/games/rust) variant of this image. The automation checks for
@@ -70,10 +41,16 @@ There is also a `latest-oxide` tag, so you can use this to always run an up-to-d
 This image aims to be a solid base to run any plugin. So please drop me a line if you are missing any Debian package
 for a plugin.
 
-## Rust Websocket Rcon
+With my [docker compose example](examples/docker-compose-oxide/compose.yaml) you can fire up your own Rust Server with
+Oxide in a couple of minutes. That docker compose setup also contains [a Web based file manager](https://github.com/max-pfeiffer/file-manager)
+for managing your Oxide plugins and their configuration in a very convenient way. Just follow [the instructions
+in the documentation](examples/docker-compose-oxide/README.md) and you will have your Rust server with Oxide up and
+running in an eyeblink.
+
+## Rust Websocket RCON
 If you want to connect to [Rust](https://rust.facepunch.com/) server console or want to check on the server statistics,
-check out my [Rust Websocket Rcon client](https://github.com/max-pfeiffer/rust-web-rcon) companion project.
-I provide a Docker container with [Facepunch's websocket Rcon client](https://github.com/Facepunch/webrcon).
+check out my [Rust Websocket RCON client](https://github.com/max-pfeiffer/rust-web-rcon) companion project.
+I provide a Docker container with [Facepunch's websocket RCON client](https://github.com/Facepunch/webrcon).
 This is already integrated in the docker compose examples.
 
 ## Usage
@@ -119,14 +96,14 @@ And show the logs, option `-f` follows the logs:
 docker compose logs -f
 ```
 
-#### Rust Websocket Rcon
+#### Rust Websocket RCON
 When spinning up the containers with Docker compose, an instance of the
-[Rust Websocket RCon client](https://github.com/max-pfeiffer/rust-web-rcon) is started as well.
+[Rust Websocket RCON client](https://github.com/max-pfeiffer/rust-web-rcon) is started as well.
 
 If you want to connect to [Rust](https://rust.facepunch.com/) server console or want to check on the server statistics,
 point your web browser to: http://localhost
 
-Then enter the address of your server and the Rcon password in the web interface. 
+Then enter the address of your server and the RCON password in the web interface. 
 
 ### Production Deployment
 If you want to deploy to a production (Linux) server, have a look at the
