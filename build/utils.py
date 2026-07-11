@@ -1,9 +1,28 @@
 """Utilities for image publishing."""
 
+import os
 from pathlib import Path
 
 import requests
+from python_on_whales import DockerClient
 from steam.client import SteamClient
+
+
+def get_podman_client() -> DockerClient:
+    """Return the Python on Whales client configured for Podman.
+
+    If the PODMAN_CONNECTION environment variable is set, the client uses
+    that Podman system connection. This way a remote Podman host can build
+    the linux/amd64 image, e.g. when working on an arm64 machine where
+    steamcmd (a 32-bit x86 binary) cannot be emulated.
+
+    :return:
+    """
+    client_call: list[str] = ["podman"]
+    podman_connection: str | None = os.environ.get("PODMAN_CONNECTION")
+    if podman_connection:
+        client_call += ["--connection", podman_connection]
+    return DockerClient(client_call=client_call, client_type="podman")
 
 
 def get_context() -> Path:

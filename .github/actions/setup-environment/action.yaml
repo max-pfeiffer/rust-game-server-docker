@@ -6,19 +6,17 @@ inputs:
     description: The Python version to install and use
     default: "3.11"
     required: false
-  poetry-version:
-    description: The Poetry version to install and use
-    default: "2.3.2"
+  uv-version:
+    description: The uv version to install and use
+    default: "0.11.19"
     required: false
 
 runs:
   using: composite
   steps:
-    - name: Setup Poetry
-      run: pipx install poetry==${{ inputs.poetry-version }}
-      shell: bash
-    - name: Setup Python ${{ inputs.python-version }}
-      uses: actions/setup-python@v5
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
       with:
+        version: ${{ inputs.uv-version }}
         python-version: ${{ inputs.python-version }}
-        cache: poetry
+        enable-cache: true

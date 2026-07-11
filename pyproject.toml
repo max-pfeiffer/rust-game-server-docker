@@ -1,24 +1,30 @@
-[tool.poetry]
+[project]
 name = "rust-game-server-docker"
 version = "2.0.3"
 description = "Docker container providing a Rust dedicated game server"
-authors = ["Max Pfeiffer <max@maxpfeiffer.ch>"]
+authors = [{ name = "Max Pfeiffer", email = "max@maxpfeiffer.ch" }]
 readme = "README.md"
-package-mode = false
+requires-python = ">=3.11"
+dependencies = [
+    "click==8.4.2",
+    "python-on-whales==0.81.0",
+    "steam[client]",
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-click = "8.4.2"
-python-on-whales = "0.81.0"
-steam = {git = "https://github.com/detiam/steam_websocket.git", branch = "master", extras=["client"]}
+[dependency-groups]
+dev = [
+    "bcrypt==5.0.0",
+    "furl==2.1.4",
+    "pre-commit==4.6.0",
+    "pytest==9.1.1",
+    "pytest-cov==7.1.0",
+]
 
-[tool.poetry.group.dev.dependencies]
-bcrypt = "5.0.0"
-furl = "2.1.4"
-pre-commit = "4.6.0"
-pytest = "9.1.1"
-pytest-cov = "7.1.0"
-testcontainers = "4.14.2"
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+steam = { git = "https://github.com/detiam/steam_websocket.git", branch = "master" }
 
 [tool.ruff]
 src = ["build", "tests"]
@@ -44,7 +50,3 @@ convention = "pep257"
 testpaths = [
     "tests",
 ]
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"

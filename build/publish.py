@@ -3,13 +3,14 @@
 from pathlib import Path
 
 import click
-from python_on_whales import Builder, DockerClient
+from python_on_whales import DockerClient
 
 from build.constants import PLATFORMS
 from build.utils import (
     create_tag,
     get_context,
     get_image_reference,
+    get_podman_client,
     get_rust_build_id,
     tag_exists,
 )
@@ -67,29 +68,34 @@ def main(
         image_reference_version: str = get_image_reference(registry, tag)
         image_reference_latest: str = get_image_reference(registry, "latest")
 
-        docker_client: DockerClient = DockerClient()
-        builder: Builder = docker_client.buildx.create(
-            driver="docker-container", driver_options=dict(network="host")
-        )
+        podman_client: DockerClient = get_podman_client()
 
-        docker_client.login(
+        podman_client.login(
             server=registry,
             username=docker_hub_username,
             password=docker_hub_token,
         )
 
-        docker_client.buildx.build(
+        # Podman has no --push flag on build, so build and push separately.
+        # stream_logs=True keeps python_on_whales from inspecting buildx
+        # builders, which Podman's buildx compatibility alias does not provide.
+        build_log_stream = podman_client.buildx.build(
             context_path=context,
             target="production-image",
             tags=[image_reference_version, image_reference_latest],
             platforms=PLATFORMS,
-            builder=builder,
-            push=True,
+            stream_logs=True,
         )
+        for log_line in build_log_stream:
+            click.echo(log_line, nl=False)
 
-        # Cleanup
-        docker_client.buildx.stop(builder)
-        docker_client.buildx.remove(builder)
+        # Push the tags one at a time. python_on_whales pushes an iterable of
+        # tags concurrently, which makes Podman upload the layers shared by both
+        # tags to the registry in parallel; the registry then drops the racing
+        # blob uploads ("use of closed network connection").
+        click.echo("Pushing Rust server container image...")
+        podman_client.push(image_reference_version)
+        podman_client.push(image_reference_latest)
 
 
 if __name__ == "__main__":
