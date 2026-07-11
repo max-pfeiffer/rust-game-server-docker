@@ -1,0 +1,84 @@
+name: rust
+
+services:
+  init-container:
+    image: alpine:3.23
+    container_name: "init-container"
+    user: root
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "chown -R 10001:10001 /srv/rust/server"
+    volumes:
+      - type: volume
+        source: server_identity
+        target: "/srv/rust/server/testserver"
+  rust-server:
+    depends_on:
+      - init-container
+    image: "pfeiffermax/rust-game-server:latest-oxide"
+    container_name: "rust-server"
+    pull_policy: always
+    command:
+      - "+server.ip"
+      - "0.0.0.0"
+      - "+server.port"
+      - "28015"
+      - "+server.hostname"
+      - "Testserver"
+      - "+server.maxplayers"
+      - "10"
+      - "+server.worldsize"
+      - "1000"
+      - "+server.gamemode"
+      - "vanilla"
+      - "+server.seed"
+      - "666"
+      - "+rcon.ip"
+      - "0.0.0.0"
+      - "+rcon.port"
+      - "28016"
+      - "+rcon.password"
+      - "supersecret"
+      - "+rcon.web"
+      - "1"
+      - "+server.identity"
+      - "testserver"
+    ports:
+      - "28015:28015/udp"
+      - "28016:28016/tcp"
+    volumes:
+      - type: volume
+        source: server_identity
+        target: "/srv/rust/server/testserver"
+      - type: volume
+        source: oxide
+        target: "/srv/rust/oxide"
+  rust-web-rcon:
+    image: "pfeiffermax/rust-web-rcon:latest"
+    container_name: "rust-web-rcon"
+    depends_on:
+      - rust-server
+    ports:
+      - "80:80/tcp"
+  file-manager:
+    image: "pfeiffermax/file-manager:latest"
+    container_name: "file-manager"
+    user: root
+    depends_on:
+      - rust-server
+    ports:
+      - "8080:8080/tcp"
+    environment:
+      AUTH_METHOD: "none"
+      FILES_ROOT: "/srv/rust/oxide"
+    volumes:
+      - type: volume
+        source: oxide
+        target: "/srv/rust/oxide"
+
+volumes:
+  server_identity:
+    name: "rust-server-identity-testserver"
+  oxide:
+    name: "rust-remote-builder-oxide"
