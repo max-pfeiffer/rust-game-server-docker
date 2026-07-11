@@ -1,0 +1,60 @@
+name: rust-remote-builder
+
+services:
+  init-container:
+    image: alpine:3.23
+    container_name: "rust-remote-builder-init"
+    user: root
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "chown -R 10001:10001 /srv/rust/server"
+    volumes:
+      - type: volume
+        source: server_identity
+        target: "/srv/rust/server/testserver"
+  rust-server:
+    # A locally built image on the remote builder, e.g.:
+    # podman --connection remotebuilder build --tag rust-game-server:test build
+    image: "${RUST_IMAGE:-localhost/rust-game-server:test}"
+    pull_policy: never
+    container_name: "rust-remote-builder-server"
+    depends_on:
+      init-container:
+        condition: service_completed_successfully
+    command:
+      - "+server.ip"
+      - "0.0.0.0"
+      - "+server.port"
+      - "28015"
+      - "+server.hostname"
+      - "Testserver"
+      - "+server.maxplayers"
+      - "10"
+      - "+server.worldsize"
+      - "1000"
+      - "+server.gamemode"
+      - "vanilla"
+      - "+server.seed"
+      - "666"
+      - "+rcon.ip"
+      - "0.0.0.0"
+      - "+rcon.port"
+      - "28016"
+      - "+rcon.password"
+      - "supersecret"
+      - "+rcon.web"
+      - "1"
+      - "+server.identity"
+      - "testserver"
+    ports:
+      - "28015:28015/udp"
+      - "28016:28016/tcp"
+    volumes:
+      - type: volume
+        source: server_identity
+        target: "/srv/rust/server/testserver"
+
+volumes:
+  server_identity:
+    name: "rust-remote-builder-identity"

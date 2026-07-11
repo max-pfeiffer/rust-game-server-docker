@@ -1,0 +1,82 @@
+name: rust-remote-builder-oxide
+
+services:
+  init-container:
+    image: alpine:3.23
+    container_name: "rust-remote-builder-oxide-init"
+    user: root
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "chown -R 10001:10001 /srv/rust/server"
+    volumes:
+      - type: volume
+        source: server_identity
+        target: "/srv/rust/server/testserver"
+  rust-server:
+    # A locally built Oxide image on the remote builder, e.g.:
+    # podman --connection remotebuilder build \
+    #   --build-arg OXIDE_ZIP_FILE_URL=https://github.com/OxideMod/Oxide.Rust/releases/latest/download/Oxide.Rust-linux.zip \
+    #   --tag rust-game-server:oxide-test build/oxide
+    image: "${RUST_IMAGE:-localhost/rust-game-server:oxide-test}"
+    pull_policy: never
+    container_name: "rust-remote-builder-oxide-server"
+    depends_on:
+      init-container:
+        condition: service_completed_successfully
+    command:
+      - "+server.ip"
+      - "0.0.0.0"
+      - "+server.port"
+      - "28015"
+      - "+server.hostname"
+      - "Testserver"
+      - "+server.maxplayers"
+      - "10"
+      - "+server.worldsize"
+      - "1000"
+      - "+server.gamemode"
+      - "vanilla"
+      - "+server.seed"
+      - "666"
+      - "+rcon.ip"
+      - "0.0.0.0"
+      - "+rcon.port"
+      - "28016"
+      - "+rcon.password"
+      - "supersecret"
+      - "+rcon.web"
+      - "1"
+      - "+server.identity"
+      - "testserver"
+    ports:
+      - "28015:28015/udp"
+      - "28016:28016/tcp"
+    volumes:
+      - type: volume
+        source: server_identity
+        target: "/srv/rust/server/testserver"
+      - type: volume
+        source: oxide
+        target: "/srv/rust/oxide"
+  file-manager:
+    image: "pfeiffermax/file-manager:1.0.0"
+    container_name: "file-manager"
+    user: root
+    depends_on:
+      - rust-server
+    ports:
+      - "8080:8080/tcp"
+    environment:
+      AUTH_METHOD: "none"
+      FILES_ROOT: "/srv/rust/oxide"
+    volumes:
+      - type: volume
+        source: oxide
+        target: "/srv/rust/oxide"
+
+volumes:
+  server_identity:
+    name: "rust-remote-builder-oxide-identity"
+  oxide:
+    name: "rust-remote-builder-oxide"
