@@ -44,7 +44,7 @@ for a plugin.
 With my [docker compose example](examples/docker-compose-oxide/compose.yaml) you can fire up your own Rust Server with
 Oxide in a couple of minutes. That docker compose setup also contains [a Web based file manager](https://github.com/max-pfeiffer/file-manager)
 for managing your Oxide plugins and their configuration in a very convenient way. Just follow [the instructions
-in the documentation](examples/docker-compose-oxide/README.md) and you will have your Rust server with Oxide up and
+in the documentation](examples/docker-compose-oxide/README.md), and you will have your Rust server with Oxide up and
 running in an eyeblink.
 
 ## Rust Websocket RCON

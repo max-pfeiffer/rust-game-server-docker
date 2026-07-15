@@ -40,8 +40,8 @@ docker compose down
 | --- | --- | --- |
 | `init-container` | `alpine` | Chowns the server data volume to the unprivileged container user (UID/GID 10001) and exits. Since v2.0.0 the server runs as user `rust`, not root. |
 | `rust-server` | `pfeiffermax/rust-game-server:latest-oxide` | The Rust dedicated server with Oxide. Game port `28015/udp`, RCON port `28016/tcp`. |
-| `rust-web-rcon` | `pfeiffermax/rust-web-rcon:latest` | Browser-based RCON console, published on port `80`. |
-| `file-manager` | `pfeiffermax/file-manager:latest` | Web file browser rooted at the `oxide` volume, published on port `8080`. Used to manage plugins and configs. |
+| `rust-web-rcon` | `pfeiffermax/rust-web-rcon:latest` | Browser-based RCON console, published on port `8080`. |
+| `file-manager` | `pfeiffermax/file-manager:latest` | Web file browser rooted at the `oxide` volume, published on port `8081`. Used to manage plugins and configs. |
 
 Server settings (hostname, world size, RCON password, etc.) are passed as `+server.*` /
 `+rcon.*` arguments in the `command:` list of the `rust-server` service in
@@ -49,7 +49,7 @@ Server settings (hostname, world size, RCON password, etc.) are passed as `+serv
 
 ### Web RCON
 
-Point your browser at http://localhost, then enter the server address and the RCON
+Point your browser at http://localhost:8080, then enter the server address and the RCON
 password (`supersecret` in this example — change it in `compose.yaml`) to reach the Rust
 server console and statistics.
 
@@ -73,7 +73,7 @@ Oxide's directory.
 To install a plugin (see the [official uMod guide](https://docs.oxidemod.com/guides/owners/install-plugins)):
 
 1. Download the plugin's `.cs` file (for example from [uMod](https://umod.org/plugins)).
-2. Open the file manager at http://localhost:8080 and browse into the `plugins` folder.
+2. Open the file manager at http://localhost:8081 and browse into the `plugins` folder.
 3. Upload the `.cs` file there.
 
 Oxide watches `oxide/plugins` and **compiles and loads new or changed plugins
@@ -88,7 +88,7 @@ Removing a plugin's `.cs` file from `oxide/plugins` (via the file manager) unloa
 Most plugins generate a JSON configuration file under `oxide/config` the first time they
 load — for example `oxide/config/MyPlugin.json`. To customize a plugin:
 
-1. In the file manager (http://localhost:8080), browse into the `config` folder.
+1. In the file manager (http://localhost:8081), browse into the `config` folder.
 2. Open the plugin's `.json` file and edit it in the browser, then save.
 3. Apply the changes by reloading the plugin from the web RCON console:
    `oxide.reload MyPlugin`. Many plugins also pick up config changes automatically.
@@ -100,7 +100,7 @@ manager.
 ## Security note
 
 For simplicity the file manager runs with `AUTH_METHOD: none`, meaning **anyone who can
-reach port `8080` has full read/write access** to your Oxide files. This is fine for local
+reach port `8081` has full read/write access** to your Oxide files. This is fine for local
 testing on a trusted machine. Before exposing this setup to a network, protect the file
 manager — it also supports HTTP basic auth and Keycloak/OIDC. Set, for example:
 

@@ -60,7 +60,7 @@ services:
     depends_on:
       - rust-server
     ports:
-      - "80:80/tcp"
+      - "8080:80/tcp"
   file-manager:
     image: "pfeiffermax/file-manager:latest"
     container_name: "file-manager"
@@ -68,7 +68,7 @@ services:
     depends_on:
       - rust-server
     ports:
-      - "8080:8080/tcp"
+      - "8081:8080/tcp"
     environment:
       AUTH_METHOD: "none"
       FILES_ROOT: "/srv/rust/oxide"
