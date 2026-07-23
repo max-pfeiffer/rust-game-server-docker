@@ -15,7 +15,7 @@ dependencies = [
 dev = [
     "bcrypt==5.0.0",
     "furl==2.1.4",
-    "pre-commit==4.6.0",
+    "pre-commit==4.6.1",
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
 ]
