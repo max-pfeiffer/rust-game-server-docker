@@ -6,7 +6,7 @@ authors = [{ name = "Max Pfeiffer", email = "max@maxpfeiffer.ch" }]
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "click==8.4.2",
+    "click==8.5.0",
     "python-on-whales==0.81.0",
     "steam[client]",
 ]
